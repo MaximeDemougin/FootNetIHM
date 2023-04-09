@@ -1,0 +1,44 @@
+.scrollable {
+    height: 350px;
+    overflow-y: scroll;
+    scrollbar-width: 20px; /* hide the default scrollbar */
+    -ms-overflow-style: none; /* hide the default scrollbar (IE and Edge) */
+  }
+  .scrollable::-webkit-scrollbar {
+    display: none; /* hide the default scrollbar (Chrome, Safari, Opera) */
+  }
+  .list-container {
+    display: flex;
+  }
+  
+  .left-column {
+    text-align: justify;
+  }
+  
+  .right-column {
+    text-align: right;
+  }
+
+  #left{
+    background-color: blue;
+  }
+
+  .win_droite.size-medium.status-primary{
+    width: 50%; border-right: solid white; --progress-bar-primary-filled-background-color: #edf1f7; --progress-bar-primary-background-color: #35496d;
+  }
+  .loss_droite.size-medium.status-primary{
+    width: 50%; border-right: solid white; --progress-bar-primary-filled-background-color: #edf1f7; --progress-bar-primary-background-color: #598bff;
+  }
+  .nul_droite.size-medium.status-primary{
+    width: 50%; border-right: solid white; --progress-bar-primary-filled-background-color: #edf1f7; --progress-bar-primary-background-color: #35496d;
+  }
+
+  .win_gauche.size-medium.status-primary{
+    width: 50%; --progress-bar-primary-filled-background-color: #598bff; --progress-bar-primary-background-color: #edf1f7;
+  }
+  .loss_gauche.size-medium.status-primary{
+    width: 50%; --progress-bar-primary-filled-background-color: #35496d; --progress-bar-primary-background-color: #edf1f7;
+  }
+  .nul_gauche.size-medium.status-primary{
+    width: 50%; --progress-bar-primary-filled-background-color: #35496d; --progress-bar-primary-background-color: #edf1f7;
+  }

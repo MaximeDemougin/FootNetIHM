@@ -1,0 +1,505 @@
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>
+      <h1>Selected leagues</h1>
+    </nb-card-header>
+    <nb-card-body>
+  
+      <nb-tag-list (tagRemove)="onTagRemove($event)">
+        <nb-tag *ngFor="let tree of id_leagues" [text]="tree" [removable]="true" (tagRemove)="onTagRemove($event)">
+      </nb-tag>
+      </nb-tag-list>
+  
+    </nb-card-body>
+  </nb-card>
+  <nb-card>
+    <nb-card-header>
+      <h1>Removed leagues</h1>
+    </nb-card-header>
+    <nb-card-body>
+      <nb-tag-list (tagRemove)="onRemovedTagRemove($event)">
+        <nb-tag *ngFor="let tree of removed_leagues" [text]="tree" [removable]="true" (tagRemove)="onRemovedTagRemove($event)">
+      </nb-tag>
+      </nb-tag-list>
+  
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton (click)="ref.close()">Close Dialog</button>
+    </nb-card-footer>
+  </nb-card>
+ 
+</ng-template>
+
+<nb-card>
+  <nb-card-header>
+    <h1 style="text-align: center;" >Matchs du jour</h1>
+  </nb-card-header>
+  <nb-card-body class="d-flex flex-column align-items-center">
+    <div class="mb-2">
+      <p style="text-align: center;"><strong>Choix de la date :</strong></p>
+      <input nbInput placeholder="Pick Date" [nbDatepicker]="dateTimePicker" [(ngModel)]="defaultDate">
+      <nb-datepicker #dateTimePicker (dateChange)="onDateChange($event)"></nb-datepicker>
+    </div>
+    <div>
+      <button nbButton (click)="open(dialog)" status="primary">Filtrer les championnat</button>
+    </div>
+</nb-card-body>
+
+
+
+</nb-card>
+<div class="row">
+  <div class="col-md-12 col-lg-6 col-xxxl-6">
+    <div class="accordion-container">
+      <div *ngFor="let id of id_leagues">
+        <h1 style="text-align: center;">{{ id }}</h1>
+        <accordion-matchs (click)="clicked = true" *ngFor="let match of getMatchesForLeague(id)" [match]="match"></accordion-matchs>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!clicked, else elseBlock"  class="tkt col-md-12 col-lg-6 col-xxxl-6" >
+    <br/>
+    <br/>
+    <nb-card style = "    position: sticky;
+    top: 100px;
+    padding: 0px;
+    font-size: 25px;">
+
+      <nb-card-body>
+        <h3 style="text-align: center;">Cliquer sur un match pour afficher les informations associées</h3>
+      </nb-card-body>
+    </nb-card>
+
+  </div>
+  <ng-template #elseBlock>
+  <div class="tkt col-md-12 col-lg-6 col-xxxl-6" >
+    <br/>
+    <br/>
+    <nb-card style = "    position: sticky;
+    top: 100px;
+    padding: 0px;
+    font-size: 25px;">
+      <nb-card-header>
+        <div>
+          <div style="text-align: center;">
+            <h2>{{ accordionData.homeTeam }} vs {{ accordionData.awayTeam }}</h2>
+            <p>{{ accordionData.Date_match}}</p>
+          </div>
+        </div>
+      </nb-card-header>
+      <nb-card-body>
+        <nb-tabset fullWidth>
+
+          <nb-tab tabTitle="Forme" style="
+          padding-right: 0;
+          padding-right: 0px;
+          padding-left: 0px;
+      ">
+            <div style="display: flex;justify-content: center;padding-top: 20px;">
+              <div class="list-container" style="padding-right: 10px;">
+                <ul class="left-column" style="list-style: none;padding-left: 0px;">
+                  <li *ngFor="let team of histo.home.opponent">
+                    <nb-icon [icon]="histo.home.homeAway[histo.home.opponent.indexOf(team)] ? 'paper-plane' : 'home'"></nb-icon>
+                    {{histo.home.date[histo.home.opponent.indexOf(team)]}} -
+                    {{ team }}
+                  </li>
+                </ul> 
+                <ul class="right-column" style="list-style: none;">
+                  <li *ngFor="let item of histo_icon_home">
+                    <nb-icon [icon]="getIcon(item)" [status]="getColor(item)"></nb-icon>
+                  </li>
+                </ul>
+              </div>
+              <div class="list-container" style="padding-left: 10px; border-left: 1px solid #598bff;">
+                <ul style="list-style: none; padding: 0;">
+                  <li *ngFor="let item of histo_icon_away">
+                    <nb-icon [icon]="getIcon(item)" [status]="getColor(item)"></nb-icon>
+                  </li>
+                </ul>
+                <ul class="right-column" style="list-style: none;">
+                  <li *ngFor="let team of histo.away.opponent">
+                    {{ team }} -
+                    {{histo.away.date[histo.away.opponent.indexOf(team)]}} 
+                    <nb-icon [icon]="histo.away.homeAway[histo.away.opponent.indexOf(team)] ? 'paper-plane' : 'home'"></nb-icon>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nb-tab>
+
+          <nb-tab tabTitle="Statistiques">
+              
+              <div *ngIf="features" class="scrollable">
+                <p style="text-align: center; margin-top: 10px;margin-bottom:5px ;">Points au championnat</p>
+                <div style="display: flex; align-items: center;">
+                  <span style="margin-right: 10px;">{{features.HomePoints}}</span>
+                  <nb-progress-bar [value]="100*(1-features.HomePoints/(features.HomePoints+features.AwayPoints))" 
+                                    [ngClass]="{'win_droite': features.HomePoints > features.AwayPoints, 
+                                                'loss_droite': features.HomePoints < features.AwayPoints, 
+                                                'nul_droite': features.HomePoints == features.AwayPoints}" 
+                                    status="primary">
+                    </nb-progress-bar>
+                    <nb-progress-bar [value]="100*features.AwayPoints/(features.HomePoints+features.AwayPoints)"
+                                    [ngClass]="{'win_gauche': features.HomePoints > features.AwayPoints, 
+                                                'loss_gauche': features.HomePoints < features.AwayPoints, 
+                                                'nul_gauche': features.HomePoints == features.AwayPoints}" 
+                                    status="primary">
+                  </nb-progress-bar>
+                  <span style="margin-left: 10px;">{{features.AwayPoints}}</span>
+                </div>
+                
+                <p style="text-align: center; margin-top: 10px;margin-bottom:5px ;">Pourcentage de victoire :</p>
+                <div style="display: flex; align-items: center;">
+                  <span style="margin-right: 10px;">{{features.HomeWinPercentage_saison}}%</span>
+                    <nb-progress-bar [value]="(100-features.HomeWinPercentage_saison)" 
+                                    [ngClass]="{'win_droite': features.HomeWinPercentage_saison > features.AwayWinPercentage_saison, 
+                                                'loss_droite': features.HomeWinPercentage_saison < features.AwayWinPercentage_saison, 
+                                                'nul_droite': features.HomeWinPercentage_saison == features.AwayWinPercentage_saison}" 
+                                    status="primary">
+                    </nb-progress-bar>
+                    <nb-progress-bar [value]="features.AwayWinPercentage_saison" 
+                                    [ngClass]="{'win_gauche': features.HomeWinPercentage_saison > features.AwayWinPercentage_saison, 
+                                                'loss_gauche': features.HomeWinPercentage_saison < features.AwayWinPercentage_saison, 
+                                                'nul_gauche': features.HomeWinPercentage_saison == features.AwayWinPercentage_saison}" 
+                                    status="primary">
+                    </nb-progress-bar>
+                  <span style="margin-left: 10px;">{{features.AwayWinPercentage_saison}}%</span>
+                </div>
+
+                <p style="text-align: center; margin-top: 10px;margin-bottom:5px ;">Élo de la saison : </p>
+                <div style="display: flex; align-items: center;">
+                  <span style="margin-right: 10px;">{{features.HomeElo_saison}}</span>
+                  <nb-progress-bar [value]="100*(1-features.HomeElo_saison/(features.HomeElo_saison+features.AwayElo_saison))"
+                                    [ngClass]="{'win_droite': features.HomeElo_saison > features.AwayElo_saison, 
+                                                'loss_droite': features.HomeElo_saison < features.AwayElo_saison, 
+                                                'nul_droite': features.HomeElo_saison == features.AwayElo_saison}" 
+                                    status="primary">
+                    </nb-progress-bar>
+                    <nb-progress-bar [value]="100*features.AwayElo_saison/(features.HomeElo_saison+features.AwayElo_saison)"
+                                    [ngClass]="{'win_gauche': features.HomeElo_saison > features.AwayElo_saison, 
+                                                'loss_gauche': features.HomeElo_saison < features.AwayElo_saison, 
+                                                'nul_gauche': features.HomeElo_saison == features.AwayElo_saison}" 
+                                    status="primary">
+                  </nb-progress-bar>
+                  <span style="margin-left: 10px;">{{features.AwayElo_saison}}</span>
+                </div>
+                
+                <p style="text-align: center; margin-top: 10px;margin-bottom:5px ;">Nombre de buts par match :</p>
+                <div style="display: flex; align-items: center;">
+                  <span style="margin-right: 10px;">{{features.HomeGoalPerMatch_saison}}</span>
+                  <nb-progress-bar [value]="100*(1-features.HomeGoalPerMatch_saison/(features.HomeGoalPerMatch_saison+features.AwayGoalPerMatch_saison))"
+                                    [ngClass]="{'win_droite': features.HomeGoalPerMatch_saison > features.AwayGoalPerMatch_saison, 
+                                                'loss_droite': features.HomeGoalPerMatch_saison < features.AwayGoalPerMatch_saison, 
+                                                'nul_droite': features.HomeGoalPerMatch_saison == features.AwayGoalPerMatch_saison}" 
+                                    status="primary">
+                    </nb-progress-bar>
+                    <nb-progress-bar [value]="100*features.AwayGoalPerMatch_saison/(features.HomeGoalPerMatch_saison+features.AwayGoalPerMatch_saison)"
+                                    [ngClass]="{'win_gauche': features.HomeGoalPerMatch_saison > features.AwayGoalPerMatch_saison, 
+                                                'loss_gauche': features.HomeGoalPerMatch_saison < features.AwayGoalPerMatch_saison, 
+                                                'nul_gauche': features.HomeGoalPerMatch_saison == features.AwayGoalPerMatch_saison}" 
+                                    status="primary">
+                  </nb-progress-bar>
+                  
+                  
+                  <span style="margin-left: 10px;">{{features.AwayGoalPerMatch_saison}}</span>
+                </div>
+
+                <p style="text-align: center; margin-top: 10px;margin-bottom:5px ;">Nombre de tirs par match :</p>
+                <div style="display: flex; align-items: center;">
+                  <span style="margin-right: 10px;">{{features.HomeShotPerMatch_saison}}</span>
+                  <nb-progress-bar [value]="100*(1-features.HomeShotPerMatch_saison/(features.HomeShotPerMatch_saison+features.AwayShotPerMatch_saison))"
+                                    [ngClass]="{'win_droite': features.HomeShotPerMatch_saison > features.AwayShotPerMatch_saison, 
+                                                'loss_droite': features.HomeShotPerMatch_saison < features.AwayShotPerMatch_saison, 
+                                                'nul_droite': features.HomeShotPerMatch_saison == features.AwayShotPerMatch_saison}" 
+                                    status="primary">
+                    </nb-progress-bar>
+                    <nb-progress-bar [value]="100*features.AwayShotPerMatch_saison/(features.HomeShotPerMatch_saison+features.AwayShotPerMatch_saison)"
+                                    [ngClass]="{'win_gauche': features.HomeShotPerMatch_saison > features.AwayShotPerMatch_saison, 
+                                                'loss_gauche': features.HomeShotPerMatch_saison < features.AwayShotPerMatch_saison, 
+                                                'nul_gauche': features.HomeShotPerMatch_saison == features.AwayShotPerMatch_saison}" 
+                                    status="primary">
+                  </nb-progress-bar>
+                  <span style="margin-left: 10px;">{{features.AwayShotPerMatch_saison}}</span>
+                </div>
+
+                <p style="text-align: center; margin-top: 10px;margin-bottom:5px ;">Nombre de tirs cadrés par match: </p>
+                <div style="display: flex; align-items: center;">
+                  <span style="margin-right: 10px;">{{features.HomeShotTargetPerMatch_saison}}</span>
+                  <nb-progress-bar [value]="100*(1-features.HomeShotTargetPerMatch_saison/(features.HomeShotTargetPerMatch_saison+features.AwayShotTargetPerMatch_saison))"
+                                    [ngClass]="{'win_droite': features.HomeShotTargetPerMatch_saison > features.AwayShotTargetPerMatch_saison, 
+                                                'loss_droite': features.HomeShotTargetPerMatch_saison < features.AwayShotTargetPerMatch_saison, 
+                                                'nul_droite': features.HomeShotTargetPerMatch_saison == features.AwayShotTargetPerMatch_saison}" 
+                                    status="primary">
+                    </nb-progress-bar>
+                    <nb-progress-bar [value]="100*features.AwayShotTargetPerMatch_saison/(features.HomeShotTargetPerMatch_saison+features.AwayShotTargetPerMatch_saison)"
+                                    [ngClass]="{'win_gauche': features.HomeShotTargetPerMatch_saison > features.AwayShotTargetPerMatch_saison, 
+                                                'loss_gauche': features.HomeShotTargetPerMatch_saison < features.AwayShotTargetPerMatch_saison, 
+                                                'nul_gauche': features.HomeShotTargetPerMatch_saison == features.AwayShotTargetPerMatch_saison}" 
+                                    status="primary">
+                  </nb-progress-bar>
+                  <span style="margin-left: 10px;">{{features.AwayShotTargetPerMatch_saison}}</span>
+                </div>
+
+                <p style="text-align: center; margin-top: 10px;margin-bottom:5px ;">Possession :</p>
+                <div style="display: flex; align-items: center;">
+                  <span style="margin-right: 10px;">{{features.HomePossessionMean_saison}}%</span>
+                  <nb-progress-bar [value]="(100-features.HomePossessionMean_saison)"
+                                    [ngClass]="{'win_droite': features.HomePossessionMean_saison > features.AwayPossessionMean_saison, 
+                                                'loss_droite': features.HomePossessionMean_saison < features.AwayPossessionMean_saison, 
+                                                'nul_droite': features.HomePossessionMean_saison == features.AwayPossessionMean_saison}" 
+                                    status="primary">
+                    </nb-progress-bar>
+                    <nb-progress-bar [value]="features.AwayPossessionMean_saison"
+                                    [ngClass]="{'win_gauche': features.HomePossessionMean_saison > features.AwayPossessionMean_saison, 
+                                                'loss_gauche': features.HomePossessionMean_saison < features.AwayPossessionMean_saison, 
+                                                'nul_gauche': features.HomePossessionMean_saison == features.AwayPossessionMean_saison}" 
+                                    status="primary">
+                  </nb-progress-bar>
+                  <span style="margin-left: 10px;">{{features.AwayPossessionMean_saison}}%</span>
+                </div>
+
+                <p style="text-align: center; margin-top: 10px;margin-bottom:5px ;">Nombre de passes par match : </p>
+                <div style="display: flex; align-items: center;">
+                  <span style="margin-right: 10px;">{{features.HomePassPerMatch_saison}}</span>
+                  <nb-progress-bar [value]="100*(1-features.HomePassPerMatch_saison/(features.HomePassPerMatch_saison+features.AwayPassPerMatch_saison))"
+                                    [ngClass]="{'win_droite': features.HomePassPerMatch_saison > features.AwayPassPerMatch_saison, 
+                                                'loss_droite': features.HomePassPerMatch_saison < features.AwayPassPerMatch_saison, 
+                                                'nul_droite': features.HomePassPerMatch_saison == features.AwayPassPerMatch_saison}" 
+                                    status="primary">
+                    </nb-progress-bar>
+                    <nb-progress-bar [value]="100*features.AwayPassPerMatch_saison/(features.HomePassPerMatch_saison+features.AwayPassPerMatch_saison)"
+                                    [ngClass]="{'win_gauche': features.HomePassPerMatch_saison > features.AwayPassPerMatch_saison, 
+                                                'loss_gauche': features.HomePassPerMatch_saison < features.AwayPassPerMatch_saison, 
+                                                'nul_gauche': features.HomePassPerMatch_saison == features.AwayPassPerMatch_saison}" 
+                                    status="primary">
+                  </nb-progress-bar>
+                  <span style="margin-left: 10px;">{{features.AwayPassPerMatch_saison}}</span>
+                </div>
+
+
+                <p style="text-align: center; margin-top: 10px;margin-bottom:5px ;">Nombre d'attaques par match : </p>
+                <div style="display: flex; align-items: center;">
+                  <span style="margin-right: 10px;">{{features.HomeAttacksMean_saison}}</span>
+                  <nb-progress-bar [value]="100*(1-features.HomeAttacksMean_saison/(features.HomeAttacksMean_saison+features.AwayAttacksMean_saison))"
+                                    [ngClass]="{'win_droite': features.HomeAttacksMean_saison > features.AwayAttacksMean_saison, 
+                                                'loss_droite': features.HomeAttacksMean_saison < features.AwayAttacksMean_saison, 
+                                                'nul_droite': features.HomeAttacksMean_saison == features.AwayAttacksMean_saison}" 
+                                    status="primary">
+                    </nb-progress-bar>
+                    <nb-progress-bar [value]="100*features.AwayAttacksMean_saison/(features.HomeAttacksMean_saison+features.AwayAttacksMean_saison)"
+                                    [ngClass]="{'win_gauche': features.HomeAttacksMean_saison > features.AwayAttacksMean_saison, 
+                                                'loss_gauche': features.HomeAttacksMean_saison < features.AwayAttacksMean_saison, 
+                                                'nul_gauche': features.HomeAttacksMean_saison == features.AwayAttacksMean_saison}" 
+                                    status="primary">
+                  </nb-progress-bar>
+
+                  <span style="margin-left: 10px;">{{features.AwayAttacksMean_saison}}</span>
+                </div>
+
+                <p style="text-align: center; margin-top: 10px;margin-bottom:5px ;">Nombre d'attaques dangereuse par match : </p>
+                <div style="display: flex; align-items: center;">
+                  <span style="margin-right: 10px;">{{features.HomeDangerousAttacksMean_saison}}</span>
+                  <nb-progress-bar [value]="100*(1-features.HomeDangerousAttacksMean_saison/(features.HomeDangerousAttacksMean_saison+features.AwayDangerousAttacksMean_saison))"
+                                    [ngClass]="{'win_droite': features.HomeDangerousAttacksMean_saison > features.AwayDangerousAttacksMean_saison, 
+                                                'loss_droite': features.HomeDangerousAttacksMean_saison < features.AwayDangerousAttacksMean_saison, 
+                                                'nul_droite': features.HomeDangerousAttacksMean_saison == features.AwayDangerousAttacksMean_saison}" 
+                                    status="primary">
+                    </nb-progress-bar>
+                    <nb-progress-bar [value]="100*features.AwayDangerousAttacksMean_saison/(features.HomeDangerousAttacksMean_saison+features.AwayDangerousAttacksMean_saison)"
+                                    [ngClass]="{'win_gauche': features.HomeDangerousAttacksMean_saison > features.AwayDangerousAttacksMean_saison, 
+                                                'loss_gauche': features.HomeDangerousAttacksMean_saison < features.AwayDangerousAttacksMean_saison, 
+                                                'nul_gauche': features.HomeDangerousAttacksMean_saison == features.AwayDangerousAttacksMean_saison}" 
+                                    status="primary">
+                  </nb-progress-bar>
+                  
+                  <span style="margin-left: 10px;">{{features.AwayDangerousAttacksMean_saison}}</span>
+                </div>
+
+                <p style="text-align: center; margin-top: 10px;margin-bottom:5px ;">Nombre d'hors jeu par match : </p>
+                <div style="display: flex; align-items: center;">
+                  <span style="margin-right: 10px;">{{features.HomeOffsidesPerMatch_saison}}</span>
+                  <nb-progress-bar [value]="100*(1-features.HomeOffsidesPerMatch_saison/(features.HomeOffsidesPerMatch_saison+features.AwayOffsidesPerMatch_saison))"
+                                    [ngClass]="{'win_droite': features.HomeOffsidesPerMatch_saison > features.AwayOffsidesPerMatch_saison, 
+                                                'loss_droite': features.HomeOffsidesPerMatch_saison < features.AwayOffsidesPerMatch_saison, 
+                                                'nul_droite': features.HomeOffsidesPerMatch_saison == features.AwayOffsidesPerMatch_saison}" 
+                                    status="primary">
+                    </nb-progress-bar>
+                    <nb-progress-bar [value]="100*features.AwayOffsidesPerMatch_saison/(features.HomeOffsidesPerMatch_saison+features.AwayOffsidesPerMatch_saison)"
+                                    [ngClass]="{'win_gauche': features.HomeOffsidesPerMatch_saison > features.AwayOffsidesPerMatch_saison, 
+                                                'loss_gauche': features.HomeOffsidesPerMatch_saison < features.AwayOffsidesPerMatch_saison, 
+                                                'nul_gauche': features.HomeOffsidesPerMatch_saison == features.AwayOffsidesPerMatch_saison}" 
+                                    status="primary">
+                  </nb-progress-bar>
+                  <span style="margin-left: 10px;">{{features.AwayOffsidesPerMatch_saison}}</span>
+                </div>
+
+                <p style="text-align: center; margin-top: 10px;margin-bottom:5px ;">Nombre de corners par match : </p>
+                <div style="display: flex; align-items: center;">
+                  <span style="margin-right: 10px;">{{features.HomeCornersPerMatch_saison}}</span>
+                  <nb-progress-bar [value]="100*(1-features.HomeCornersPerMatch_saison/(features.HomeCornersPerMatch_saison+features.AwayCornersPerMatch_saison))"
+                                    [ngClass]="{'win_droite': features.HomeCornersPerMatch_saison > features.AwayCornersPerMatch_saison, 
+                                                'loss_droite': features.HomeCornersPerMatch_saison < features.AwayCornersPerMatch_saison, 
+                                                'nul_droite': features.HomeCornersPerMatch_saison == features.AwayCornersPerMatch_saison}" 
+                                    status="primary">
+                    </nb-progress-bar>
+                    <nb-progress-bar [value]="100*features.AwayCornersPerMatch_saison/(features.HomeCornersPerMatch_saison+features.AwayCornersPerMatch_saison)"
+                                    [ngClass]="{'win_gauche': features.HomeCornersPerMatch_saison > features.AwayCornersPerMatch_saison, 
+                                                'loss_gauche': features.HomeCornersPerMatch_saison < features.AwayCornersPerMatch_saison, 
+                                                'nul_gauche': features.HomeCornersPerMatch_saison == features.AwayCornersPerMatch_saison}" 
+                                    status="primary">
+                  </nb-progress-bar>
+                  <span style="margin-left: 10px;">{{features.AwayCornersPerMatch_saison}}</span>
+                </div>
+
+                <p style="text-align: center; margin-top: 10px;margin-bottom:5px ;">Nombre de fautes par match : </p>
+                <div style="display: flex; align-items: center;">
+                  <span style="margin-right: 10px;">{{features.HomeFoulsPerMatch_saison}}</span>
+                  <nb-progress-bar [value]="100*(1-features.HomeFoulsPerMatch_saison/(features.HomeFoulsPerMatch_saison+features.AwayFoulsPerMatch_saison))"
+                                    [ngClass]="{'win_droite': features.HomeFoulsPerMatch_saison > features.AwayFoulsPerMatch_saison, 
+                                                'loss_droite': features.HomeFoulsPerMatch_saison < features.AwayFoulsPerMatch_saison, 
+                                                'nul_droite': features.HomeFoulsPerMatch_saison == features.AwayFoulsPerMatch_saison}" 
+                                    status="primary">
+                    </nb-progress-bar>
+                    <nb-progress-bar [value]="100*features.AwayFoulsPerMatch_saison/(features.HomeFoulsPerMatch_saison+features.AwayFoulsPerMatch_saison)"
+                                    [ngClass]="{'win_gauche': features.HomeFoulsPerMatch_saison > features.AwayFoulsPerMatch_saison, 
+                                                'loss_gauche': features.HomeFoulsPerMatch_saison < features.AwayFoulsPerMatch_saison, 
+                                                'nul_gauche': features.HomeFoulsPerMatch_saison == features.AwayFoulsPerMatch_saison}" 
+                                    status="primary">
+                  </nb-progress-bar>
+                  <span style="margin-left: 10px;">{{features.AwayFoulsPerMatch_saison}}</span>
+                </div>
+
+                <p style="text-align: center; margin-top: 10px;margin-bottom:5px ;">Nombre de cartons jaune par match : </p>
+                <div style="display: flex; align-items: center;">
+                  <span style="margin-right: 10px;">{{features.HomeYellowPerMatch_saison}}</span>
+                  <nb-progress-bar [value]="100*(1-features.HomeYellowPerMatch_saison/(features.HomeYellowPerMatch_saison+features.AwayYellowPerMatch_saison))"
+                                    [ngClass]="{'win_droite': features.HomeYellowPerMatch_saison > features.AwayYellowPerMatch_saison, 
+                                                'loss_droite': features.HomeYellowPerMatch_saison < features.AwayYellowPerMatch_saison, 
+                                                'nul_droite': features.HomeYellowPerMatch_saison == features.AwayYellowPerMatch_saison}" 
+                                    status="primary">
+                    </nb-progress-bar>
+                    <nb-progress-bar [value]="100*features.AwayYellowPerMatch_saison/(features.HomeYellowPerMatch_saison+features.AwayYellowPerMatch_saison)"
+                                    [ngClass]="{'win_gauche': features.HomeYellowPerMatch_saison > features.AwayYellowPerMatch_saison, 
+                                                'loss_gauche': features.HomeYellowPerMatch_saison < features.AwayYellowPerMatch_saison, 
+                                                'nul_gauche': features.HomeYellowPerMatch_saison == features.AwayYellowPerMatch_saison}" 
+                                    status="primary">
+                  </nb-progress-bar>
+                  <span style="margin-left: 10px;">{{features.AwayYellowPerMatch_saison}}</span>
+                </div>
+
+                <p style="text-align: center; margin-top: 10px;margin-bottom:5px ;">Nombre de cartons rouge par match : </p>
+                <div style="display: flex; align-items: center;">
+                  <span style="margin-right: 10px;">{{features.HomeRedPerMatch_saison}}</span>
+                  <nb-progress-bar [value]="100*(1-features.HomeRedPerMatch_saison/(features.HomeRedPerMatch_saison+features.AwayRedPerMatch_saison))"
+                                    [ngClass]="{'win_droite': features.HomeRedPerMatch_saison > features.AwayRedPerMatch_saison, 
+                                                'loss_droite': features.HomeRedPerMatch_saison < features.AwayRedPerMatch_saison, 
+                                                'nul_droite': features.HomeRedPerMatch_saison == features.AwayRedPerMatch_saison}" 
+                                    status="primary">
+                    </nb-progress-bar>
+                    <nb-progress-bar [value]="100*features.AwayRedPerMatch_saison/(features.HomeRedPerMatch_saison+features.AwayRedPerMatch_saison)"
+                                    [ngClass]="{'win_gauche': features.HomeRedPerMatch_saison > features.AwayRedPerMatch_saison, 
+                                                'loss_gauche': features.HomeRedPerMatch_saison < features.AwayRedPerMatch_saison, 
+                                                'nul_gauche': features.HomeRedPerMatch_saison == features.AwayRedPerMatch_saison}" 
+                                    status="primary">
+                  </nb-progress-bar>
+                  <span style="margin-left: 10px;">{{features.AwayRedPerMatch_saison}}</span>
+                </div>
+
+                <p style="text-align: center; margin-top: 10px;margin-bottom:5px ;">Nombre d'arrêts par match : </p>
+                <div style="display: flex; align-items: center;">
+                  <span style="margin-right: 10px;">{{features.HomeSavesPerMatch_saison}}</span>
+                  <nb-progress-bar [value]="100*(1-features.HomeSavesPerMatch_saison/(features.HomeSavesPerMatch_saison+features.AwaySavesPerMatch_saison))"
+                                    [ngClass]="{'win_droite': features.HomeSavesPerMatch_saison > features.AwaySavesPerMatch_saison, 
+                                                'loss_droite': features.HomeSavesPerMatch_saison < features.AwaySavesPerMatch_saison, 
+                                                'nul_droite': features.HomeSavesPerMatch_saison == features.AwaySavesPerMatch_saison}" 
+                                    status="primary">
+                    </nb-progress-bar>
+                    <nb-progress-bar [value]="100*features.AwaySavesPerMatch_saison/(features.HomeSavesPerMatch_saison+features.AwaySavesPerMatch_saison)"
+                                    [ngClass]="{'win_gauche': features.HomeSavesPerMatch_saison > features.AwaySavesPerMatch_saison, 
+                                                'loss_gauche': features.HomeSavesPerMatch_saison < features.AwaySavesPerMatch_saison, 
+                                                'nul_gauche': features.HomeSavesPerMatch_saison == features.AwaySavesPerMatch_saison}" 
+                                    status="primary">
+                  </nb-progress-bar>
+                  <span style="margin-left: 10px;">{{features.AwaySavesPerMatch_saison}}</span>
+                </div>
+
+                
+
+              </div>
+            
+          </nb-tab>
+          <nb-tab tabTitle="Composition">
+            <div class="scrollable">
+            <h4 style="text-align: center;">Titulaires</h4>
+            
+            <hr>
+            <div style="display: flex;">
+              <div style="flex: 1; padding-right: 10px;">
+                <p style="text-align: center;"><strong>{{home_formation}}</strong></p>
+                <ul style="text-align: center;list-style: none; padding: 0;">
+                  <li *ngFor="let player of homePlayers_titu">{{ player }}</li>
+                </ul>
+              </div>
+              <div style="flex: 1; padding-left: 10px; border-left: 1px solid #598bff;">
+                <p style="text-align: center;"><strong>{{away_formation}}</strong></p>
+                <ul style="text-align: center;list-style: none; padding: 0;">
+                  <li *ngFor="let player of awayPlayers_titu">{{ player }}</li>
+                </ul>
+              </div>
+            </div>
+            <h4 style="text-align: center;">Remplaçant</h4>
+            <hr>
+            <div  style="display: flex;">
+              <div style="flex: 1; padding-right: 10px;">
+                <ul style="text-align: center;list-style: none; padding: 0;">
+                  <li *ngFor="let player of homePlayers_rempl">{{ player }}</li>
+                </ul>
+              </div>
+              <div style="flex: 1; padding-left: 10px; border-left: 1px solid #598bff;">
+                <ul style="text-align: center;list-style: none; padding: 0;">
+                  <li *ngFor="let player of awayPlayers_rempl">{{ player }}</li>
+                </ul>
+              </div>
+            </div>
+            <h4 style="text-align: center;">Blesses</h4>
+            <hr>
+            <div  style="display: flex;">
+              <div style="flex: 1; padding-right: 10px;">
+                <ul style="text-align: center;list-style: none; padding: 0;">
+                  <li *ngFor="let player of homePlayers_blesse">{{ player }}</li>
+                </ul>
+              </div>
+              <div style="flex: 1; padding-left: 10px; border-left: 1px solid #598bff;">
+                <ul style="text-align: center;list-style: none; padding: 0;">
+                  <li *ngFor="let player of awayPlayers_blesse">{{ player }}</li>
+                </ul>
+              </div>
+            </div>
+            <h4 style="text-align: center;">Entraineurs</h4>
+            <hr>
+            <div  style="display: flex;">
+              <div style="flex: 1; padding-right: 10px;">
+                <ul style="text-align: center;list-style: none; padding: 0;">
+                  <li *ngFor="let player of home_Coach">{{ player }}</li>
+                </ul>
+              </div>
+              <div style="flex: 1; padding-left: 10px; border-left: 1px solid #598bff;">
+                <ul style="text-align: center;list-style: none; padding: 0;">
+                  <li *ngFor="let player of away_Coach">{{ player }}</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          </nb-tab>
+        </nb-tabset>
+    
+      </nb-card-body>
+    </nb-card>
+  </div>
+  </ng-template>
+
+ 
+</div>
+
+
