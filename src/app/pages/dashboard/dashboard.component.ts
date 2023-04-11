@@ -56,8 +56,8 @@ export class DashboardComponent {
   clicked: boolean = false;
   show: boolean = false;
 
-  endpoint:string = 'https://footnetapi.onrender.com'
-  // endpoint:string = 'http://127.0.0.1:5000'
+  // endpoint:string = 'https://footnetapi.onrender.com'
+  endpoint:string = 'http://127.0.0.1:5000'
 
   today = new Date();
   day = this.today.getDate().toString().padStart(2, "0");
@@ -156,8 +156,8 @@ export class DashboardComponent {
   }
 
   ngOnInit() {
-    
-    this.http.get(this.endpoint+'get_match_day?date='+`${this.year}-${this.month}-${this.day}`, { observe: 'response' }).subscribe((res) => {
+    console.log(this.endpoint+'/get_match_day?date='+`${this.year}-${this.month}-${this.day}`);
+    this.http.get(this.endpoint+'/get_match_day?date='+`${this.year}-${this.month}-${this.day}`, { observe: 'response' }).subscribe((res) => {
       this.data = res.body;
       this.id_leagues = Object.keys(this.data);
 

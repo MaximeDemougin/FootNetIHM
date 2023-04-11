@@ -10,8 +10,9 @@ export class Match {
     home_max: number;
     away_max: number;
     draw_max: number;
+    link: string;
     
-    constructor(Id_match: string,Date_match: string, homeTeam: string,Id_homeTeam:string,  awayTeam: string, Id_awayTeam:string, Id_league: string, predi: number, home_max: number, away_max: number, draw_max: number) {
+    constructor(Id_match: string,Date_match: string, homeTeam: string,Id_homeTeam:string,  awayTeam: string, Id_awayTeam:string, Id_league: string, predi: number, home_max: number, away_max: number, draw_max: number, link: string) {
       this.Id_match = Id_match;
       this.Date_match = Date_match;
       this.homeTeam = homeTeam;
@@ -23,5 +24,6 @@ export class Match {
       this.home_max = home_max;
       this.away_max = away_max;
       this.draw_max = draw_max;
+      this.link = link;
     }
   }
