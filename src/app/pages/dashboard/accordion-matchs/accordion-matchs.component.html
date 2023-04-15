@@ -1,22 +1,30 @@
 <nb-accordion>
   <nb-accordion-item (collapsedChange)="toggleBackground($event,match)">
     <nb-accordion-item-header [class.selected]="isSelected(match)">
-        <div style="text-align: center;">
-          <p style="font-size:20px; font-weight:bold;">{{match.homeTeam}} - {{match.awayTeam}}</p>
-          <p>{{ match.Date_match | date:'HH:mm'}}</p>
-        </div>
+      <div style="text-align: center;">
+        <p style="font-size:20px; font-weight:bold;">
+          {{match.homeTeam}} 
+          <span *ngIf="match.FTR !== 3" style="color: #3366ff; font-size: 24px;">({{match.HScore}}</span> 
+          - 
+          <span *ngIf="match.FTR !== 3" style="color: #3366ff; font-size: 24px;">{{match.AScore}})</span> 
+          {{match.awayTeam}}
+        </p>
+        <p>{{match.Date_match | date:'HH:mm'}}</p>
+      </div>
+      
+      
         <div style="display:flex; justify-content:center; align-items:center;">
           <div style="text-align:center; margin-right:20px;">
             <div style="margin-bottom: 5px;">1</div>
-            <button nbButton [status]="match.predi === 2 ? 'primary' : 'basic'">{{match.home_max}}</button>
+            <button nbButton [status]="match.predi === 2 && match.FTR === 3 ? 'primary' : match.predi === 2 && match.FTR === 2 ? 'success' : match.predi === 2 && match.FTR !== 2? 'danger' : 'basic'">{{match.home_max}}</button>
           </div>
           <div style="text-align:center; margin-right:20px;">
             <div style="margin-bottom: 5px;">X</div>
-            <button nbButton [status]="match.predi === 1 ? 'primary' : 'basic'">{{match.draw_max}}</button>
+            <button nbButton [status]="match.predi === 1 && match.FTR === 3 ? 'primary' : match.predi === 1 && match.FTR === 1 ? 'success' : match.predi === 1 && match.FTR !== 1? 'danger' : 'basic'">{{match.draw_max}}</button>
           </div>
           <div style="text-align:center;">
             <div style="margin-bottom: 5px;">2</div>
-            <button nbButton [status]="match.predi === 0 ? 'primary' : 'basic'">{{match.away_max}}</button>
+            <button nbButton [status]="match.predi === 0 && match.FTR === 3 ? 'primary' : match.predi === 0 && match.FTR === 0 ? 'success' : match.predi === 0 && match.FTR !== 0? 'danger' : 'basic'">{{match.away_max}}</button>
           </div>
         </div>
       </nb-accordion-item-header>
