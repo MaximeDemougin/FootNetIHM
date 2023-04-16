@@ -7,6 +7,7 @@ import { AdvancedExampleServerComponent } from './table/table.component';
 import { NbCardModule, NbIconModule, NbInputModule, NbTreeGridModule } from '@nebular/theme';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { EchartsPieComponent } from './graph/graph.component';
+import { TimelineComponent } from './timeline/timeline.component';
 
 import * as echarts from 'echarts';
 @NgModule({
@@ -22,7 +23,7 @@ import * as echarts from 'echarts';
  
   ],
   declarations: [
-    StatsComponent,AdvancedExampleServerComponent,EchartsPieComponent
+    StatsComponent,AdvancedExampleServerComponent,EchartsPieComponent,TimelineComponent,
   ],
 })
 export class StatsModule { }

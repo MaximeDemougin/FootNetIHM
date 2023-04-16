@@ -11,6 +11,7 @@ import { AccordionDataService } from '../accordion-data/accordion-data.service';
 export class AccordionMatchsComponent implements OnInit {
   @ViewChild('item', { static: true }) accordion;
   @Input() match!: Match;	
+  toggled: boolean = false;
   
   constructor(private accordionDataService: AccordionDataService) { }
 
@@ -23,7 +24,14 @@ export class AccordionMatchsComponent implements OnInit {
   }
   
   toggleBackground(collapsed: boolean,accordionData: any) {
+    
+    if (this.toggled) {
+      this.toggled = !this.toggled;
+      return 0
+    }
+    this.toggled = !this.toggled;
     console.log('collapsed', collapsed);
+    
     this.accordionDataService.changeAccordionData(accordionData);
     if (!collapsed) {
       this.selectedItem = accordionData;

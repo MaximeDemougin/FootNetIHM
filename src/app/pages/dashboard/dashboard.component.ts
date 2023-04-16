@@ -1,6 +1,6 @@
 import { Component, ViewChild, ChangeDetectorRef,TemplateRef  } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { NbTagComponent, } from '@nebular/theme';
+import { NbTabComponent, NbTabsetComponent, NbTagComponent, } from '@nebular/theme';
 import { DatePipe } from '@angular/common';
 import { NbDateService } from '@nebular/theme';
 import { AccordionDataService } from './accordion-data/accordion-data.service';
@@ -55,7 +55,7 @@ export class DashboardComponent {
 
   clicked: boolean = false;
   show: boolean = false;
-
+  selectedTabMatchs: string = 'Forme';
   // endpoint:string = 'https://footnetapi.onrender.com'
   endpoint:string = 'http://127.0.0.1:5000'
 
@@ -64,15 +64,16 @@ export class DashboardComponent {
   month = (this.today.getMonth() + 1).toString().padStart(2, "0"); // JavaScript uses 0-based months, so add 1
   year = this.today.getFullYear();
 
-  constructor(private dialogService: NbDialogService, private http: HttpClient, private cdr: ChangeDetectorRef,private datePipe: DatePipe,private dateService: NbDateService<Date>,private accordionDataService: AccordionDataService) {
+  constructor(private dialogService: NbDialogService, private http: HttpClient, private cdr: ChangeDetectorRef,private datePipe: DatePipe,
+    private dateService: NbDateService<Date>,private accordionDataService: AccordionDataService) {
     this.defaultDate = new Date();
     this.accordionDataService.currentAccordionData.subscribe(data => {
       this.accordionData = data;
       console.log(this.accordionData.Id_match);
       if (typeof this.accordionData.Id_match !== "undefined") {
-        this.http.get(this.endpoint+'/get_compos_match?id='+this.accordionData.Id_match, { observe: 'response' }).subscribe((res) => {
-        
 
+        // if (this.selectedTabMatchs == 'Composition') {
+        this.http.get(this.endpoint+'/get_compos_match?id='+this.accordionData.Id_match, { observe: 'response' }).subscribe((res) => {
         this.teamComposition = res.body;
         this.homePlayers_titu = this.teamComposition.titulaire.home;
         this.awayPlayers_titu = this.teamComposition.titulaire.away;
@@ -87,12 +88,16 @@ export class DashboardComponent {
 
 
       });
+    // }
+    // if (this.selectedTabMatchs == 'Statistiques') {
 
       this.http.get(this.endpoint+'/get_features_match?id='+this.accordionData.Id_match, { observe: 'response' }).subscribe((res) => {
         
         this.features = res.body;
 
       });
+    // }
+    //if (this.selectedTabMatchs == 'Forme') {
       
       this.http.get(this.endpoint+'/get_histo?home_id='+this.accordionData.Id_homeTeam+'&away_id='+this.accordionData.Id_awayTeam+'&date='+this.accordionData.Date_match, { observe: 'response' }).subscribe((res) => {
         
@@ -107,9 +112,16 @@ export class DashboardComponent {
         
 
       });
+    // }
       }
+
       
     });
+  }
+  
+  selectTab($event: any): void {
+    console.log("selectTab $event:", $event.tabTitle)
+    this.selectedTabMatchs = $event.tabTitle;
   }
 
   myMatchs: Match[] = [];
@@ -156,7 +168,6 @@ export class DashboardComponent {
   }
 
   ngOnInit() {
-    console.log(this.endpoint+'/get_match_day?date='+`${this.year}-${this.month}-${this.day}`);
     this.http.get(this.endpoint+'/get_match_day?date='+`${this.year}-${this.month}-${this.day}`, { observe: 'response' }).subscribe((res) => {
       this.data = res.body;
       this.id_leagues = Object.keys(this.data);
@@ -203,5 +214,7 @@ export class DashboardComponent {
   open(dialog: TemplateRef<any>) {
     this.dialogService.open(dialog, { context: 'this is some additional data passed to dialog' });
   }
+
+
   
 }

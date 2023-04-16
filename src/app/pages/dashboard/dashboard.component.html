@@ -89,9 +89,9 @@
         </div>
       </nb-card-header>
       <nb-card-body>
-        <nb-tabset fullWidth>
+        <nb-tabset fullWidth (changeTab)="selectTab($event)">
 
-          <nb-tab tabTitle="Forme" style="
+          <nb-tab tabTitle="Forme"  tabId="credit_note" style="
           padding-right: 0;
           padding-right: 0px;
           padding-left: 0px;
@@ -128,7 +128,7 @@
             </div>
           </nb-tab>
 
-          <nb-tab tabTitle="Statistiques">
+          <nb-tab tabTitle="Statistiques" tabId="dvc">
               
               <div *ngIf="features" class="scrollable">
                 <p style="text-align: center; margin-top: 10px;margin-bottom:5px ;">Points au championnat</p>
@@ -429,7 +429,7 @@
               </div>
             
           </nb-tab>
-          <nb-tab tabTitle="Composition">
+          <nb-tab tabTitle="Composition" tabId="credit_nsdvote">
             <div class="scrollable">
             <h4 style="text-align: center;">Titulaires</h4>
             
