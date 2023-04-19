@@ -132,4 +132,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   redirectToLogin() {
     this.router.navigate(['/auth/login']);
   }
+  redirectToRegister() {
+    console.log('redirect to register')
+    this.router.navigate(['/auth/register']);
+  }
 }

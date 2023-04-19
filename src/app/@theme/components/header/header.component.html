@@ -31,5 +31,6 @@
   </div>
 <div *ngIf="!authenticated" class="header-container" >
   <!-- Display UI elements for non-authenticated users here -->
-  <button nbButton status = primary (click)="redirectToLogin()">Login</button>
+  <button nbButton  status = primary (click)="redirectToLogin()">Login</button>
+  <button nbButton style="margin-left: 10px;" status = success (click)="redirectToRegister()">Sign up</button>
 </div>
