@@ -5,7 +5,8 @@ import { UserData } from '../../../@core/data/users';
 import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
-
+import { NbAuthJWTToken, NbAuthService } from '@nebular/auth';
+import { Router } from '@angular/router';
 @Component({
   selector: 'ngx-header',
   styleUrls: ['./header.component.scss'],
@@ -38,22 +39,55 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   currentTheme = 'default';
 
-  userMenu = [ { title: 'Profile' }, { title: 'Log out' } ];
+  userMenu = [
+    { title: 'Profile', icon: 'fa fa-user' },
+    { title: 'Settings', icon: 'fa fa-gear' },
+    { title: 'Log out', icon: 'fa fa-sign-out' }];
 
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
               private themeService: NbThemeService,
               private userService: UserData,
               private layoutService: LayoutService,
-              private breakpointService: NbMediaBreakpointsService) {
+              private breakpointService: NbMediaBreakpointsService,
+              private authService: NbAuthService,
+              private router: Router,) {
+                
+                this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
+      
+        if (token.isValid()) {
+          console.log(token)
+          this.user = token.getPayload(); // here we receive a payload from the token and assigns it to our `user` variable 
+          this.authenticated = true;
+          console.log(this.authenticated)
+        }
+        
+      });
   }
 
+  onItemSelection( title ) {
+    if ( title === 'Log out' ) {
+      // Do something on Log out
+      console.log('Log out Clicked ')
+
+      this.authService.logout('email').subscribe(() => {
+        this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
+        this.authenticated = false;
+        });
+      });
+      
+    } else if ( title === 'Profile' ) {
+      // Do something on Profile
+      console.log('Profile Clicked ')
+    }
+  }
+  authenticated: boolean = false;
   ngOnInit() {
     this.currentTheme = this.themeService.currentTheme;
 
-    this.userService.getUsers()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((users: any) => this.user = users.nick);
+    // this.userService.getUsers()
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((users: any) => this.user = users.nick);
 
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
@@ -69,6 +103,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy$),
       )
       .subscribe(themeName => this.currentTheme = themeName);
+
+      this.menuService.onItemClick().subscribe(( event ) => {
+        this.onItemSelection(event.item.title);
+      })
   }
 
   ngOnDestroy() {
@@ -90,5 +128,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   navigateHome() {
     this.menuService.navigateHome();
     return false;
+  }
+  redirectToLogin() {
+    this.router.navigate(['/auth/login']);
   }
 }

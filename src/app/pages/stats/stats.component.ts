@@ -6,7 +6,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 
 @Component({
   selector: 'stats',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  //changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './stats.component.html'
 })
 export class StatsComponent {
