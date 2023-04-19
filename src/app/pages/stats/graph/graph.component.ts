@@ -10,7 +10,7 @@ import { C } from '@angular/cdk/keycodes';
     <div echarts [options]="options" class="echart"></div>
   `,
 })
-export class EchartsPieComponent implements AfterViewInit, OnDestroy {
+export class EchartsPieComponent implements AfterViewInit{
   options: any = {};
   themeSubscription: any;
 
@@ -89,7 +89,4 @@ export class EchartsPieComponent implements AfterViewInit, OnDestroy {
     
   }
 
-  ngOnDestroy(): void {
-    this.themeSubscription.unsubscribe();
-  }
 }

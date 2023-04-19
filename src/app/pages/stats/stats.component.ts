@@ -16,13 +16,6 @@ export class StatsComponent {
     
   }
   
-  getData(){
-    const url ='http://127.0.0.1:5000/Get_random_player'
-    this.http.get(url).subscribe((res)=>{
-      this.data = res
-      console.log(this.data)
-    })
-  }
   getData_name(player_value:string){
     console.log(player_value)
     const url ='http://127.0.0.1:5000/Get_player_by_name?name='+player_value
