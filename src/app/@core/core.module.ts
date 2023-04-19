@@ -137,12 +137,12 @@ export const NB_CORE_PROVIDERS = [
       }),
     ],
     forms: {
-      login: {
-        socialLinks: socialLinks,
-      },
-      register: {
-        socialLinks: socialLinks,
-      },
+      // login: {
+      //   socialLinks: socialLinks,
+      // },
+      // register: {
+      //   socialLinks: socialLinks,
+      // },
     },
   }).providers,
 
