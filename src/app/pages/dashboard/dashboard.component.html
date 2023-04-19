@@ -96,7 +96,7 @@
           padding-right: 0px;
           padding-left: 0px;
       ">
-            <div style="display: flex;justify-content: center;padding-top: 20px;">
+            <div *ngIf="histo !== undefined" style="display: flex;justify-content: center;padding-top: 20px;">
               <div class="list-container" style="padding-right: 10px;">
                 <ul class="left-column" style="list-style: none;padding-left: 0px;">
                   <li *ngFor="let team of histo.home.opponent">

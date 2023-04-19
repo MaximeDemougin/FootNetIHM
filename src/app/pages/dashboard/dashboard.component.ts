@@ -102,8 +102,7 @@ export class DashboardComponent {
       this.http.get(this.endpoint+'/get_histo?home_id='+this.accordionData.Id_homeTeam+'&away_id='+this.accordionData.Id_awayTeam+'&date='+this.accordionData.Date_match, { observe: 'response' }).subscribe((res) => {
         
         this.histo = res.body;
-        this.histo.home.opponent;
-        this.histo.away.opponent;
+        console.log(this.histo);
         // Assuming histo_home is your object
 
         this.histo_icon_home = this.histo.home.result;

@@ -15,7 +15,6 @@ export class statsService {
         this.timeline = res.body;
         const data = this.timeline.data;
         const index = this.timeline.index;
-        console.log(this.timeline);
         return { data, index };
       });
   }
