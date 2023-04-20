@@ -19,10 +19,6 @@
   text-align: right;
 }
 
-#left {
-  background-color: blue;
- }
-
 .win_droite.size-medium.status-primary {
   width: 50%;
   border-right: solid white;
@@ -36,25 +32,24 @@
   --progress-bar-primary-background-color: #598bff;
  }
 .nul_droite.size-medium.status-primary {
-  width: 50%; 
+  width: 50%;
   border-right: solid white;
-  --progress-bar-primary-filled-background-color: #edf1f7; 
+  --progress-bar-primary-filled-background-color: #edf1f7;
   --progress-bar-primary-background-color: #35496d;
  }
 
 .win_gauche.size-medium.status-primary {
   width: 50%;
-  --progress-bar-primary-filled-background-color: #598bff; 
+  --progress-bar-primary-filled-background-color: #598bff;
   --progress-bar-primary-background-color: #edf1f7;
  }
 .loss_gauche.size-medium.status-primary {
   width: 50%;
-  --progress-bar-primary-filled-background-color: #35496d; 
+  --progress-bar-primary-filled-background-color: #35496d;
   --progress-bar-primary-background-color: #edf1f7;
  }
 .nul_gauche.size-medium.status-primary {
   width: 50%;
-  --progress-bar-primary-filled-background-color: #35496d; 
+  --progress-bar-primary-filled-background-color: #35496d;
   --progress-bar-primary-background-color: #edf1f7;
  }
- 
