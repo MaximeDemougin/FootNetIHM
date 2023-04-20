@@ -143,7 +143,7 @@
                     <nb-progress-bar [value]="100*features.AwayPoints/(features.HomePoints+features.AwayPoints)"
                                     [ngClass]="{'win_gauche': features.HomePoints > features.AwayPoints, 
                                                 'loss_gauche': features.HomePoints < features.AwayPoints, 
-                                                'nul_gauche': features.HomePoints == features.AwayPoints}" 
+                                                'nul_gauche': features.HomePoints === features.AwayPoints}" 
                                     status="primary">
                   </nb-progress-bar>
                   <span style="margin-left: 10px;">{{features.AwayPoints}}</span>
@@ -155,13 +155,13 @@
                     <nb-progress-bar [value]="(100-features.HomeWinPercentage_saison)" 
                                     [ngClass]="{'win_droite': features.HomeWinPercentage_saison > features.AwayWinPercentage_saison, 
                                                 'loss_droite': features.HomeWinPercentage_saison < features.AwayWinPercentage_saison, 
-                                                'nul_droite': features.HomeWinPercentage_saison == features.AwayWinPercentage_saison}" 
+                                                'nul_droite': features.HomeWinPercentage_saison === features.AwayWinPercentage_saison}" 
                                     status="primary">
                     </nb-progress-bar>
                     <nb-progress-bar [value]="features.AwayWinPercentage_saison" 
                                     [ngClass]="{'win_gauche': features.HomeWinPercentage_saison > features.AwayWinPercentage_saison, 
                                                 'loss_gauche': features.HomeWinPercentage_saison < features.AwayWinPercentage_saison, 
-                                                'nul_gauche': features.HomeWinPercentage_saison == features.AwayWinPercentage_saison}" 
+                                                'nul_gauche': features.HomeWinPercentage_saison === features.AwayWinPercentage_saison}" 
                                     status="primary">
                     </nb-progress-bar>
                   <span style="margin-left: 10px;">{{features.AwayWinPercentage_saison}}%</span>
@@ -173,13 +173,13 @@
                   <nb-progress-bar [value]="100*(1-features.HomeElo_saison/(features.HomeElo_saison+features.AwayElo_saison))"
                                     [ngClass]="{'win_droite': features.HomeElo_saison > features.AwayElo_saison, 
                                                 'loss_droite': features.HomeElo_saison < features.AwayElo_saison, 
-                                                'nul_droite': features.HomeElo_saison == features.AwayElo_saison}" 
+                                                'nul_droite': features.HomeElo_saison === features.AwayElo_saison}" 
                                     status="primary">
                     </nb-progress-bar>
                     <nb-progress-bar [value]="100*features.AwayElo_saison/(features.HomeElo_saison+features.AwayElo_saison)"
                                     [ngClass]="{'win_gauche': features.HomeElo_saison > features.AwayElo_saison, 
                                                 'loss_gauche': features.HomeElo_saison < features.AwayElo_saison, 
-                                                'nul_gauche': features.HomeElo_saison == features.AwayElo_saison}" 
+                                                'nul_gauche': features.HomeElo_saison === features.AwayElo_saison}" 
                                     status="primary">
                   </nb-progress-bar>
                   <span style="margin-left: 10px;">{{features.AwayElo_saison}}</span>
@@ -191,13 +191,13 @@
                   <nb-progress-bar [value]="100*(1-features.HomeGoalPerMatch_saison/(features.HomeGoalPerMatch_saison+features.AwayGoalPerMatch_saison))"
                                     [ngClass]="{'win_droite': features.HomeGoalPerMatch_saison > features.AwayGoalPerMatch_saison, 
                                                 'loss_droite': features.HomeGoalPerMatch_saison < features.AwayGoalPerMatch_saison, 
-                                                'nul_droite': features.HomeGoalPerMatch_saison == features.AwayGoalPerMatch_saison}" 
+                                                'nul_droite': features.HomeGoalPerMatch_saison === features.AwayGoalPerMatch_saison}" 
                                     status="primary">
                     </nb-progress-bar>
                     <nb-progress-bar [value]="100*features.AwayGoalPerMatch_saison/(features.HomeGoalPerMatch_saison+features.AwayGoalPerMatch_saison)"
                                     [ngClass]="{'win_gauche': features.HomeGoalPerMatch_saison > features.AwayGoalPerMatch_saison, 
                                                 'loss_gauche': features.HomeGoalPerMatch_saison < features.AwayGoalPerMatch_saison, 
-                                                'nul_gauche': features.HomeGoalPerMatch_saison == features.AwayGoalPerMatch_saison}" 
+                                                'nul_gauche': features.HomeGoalPerMatch_saison === features.AwayGoalPerMatch_saison}" 
                                     status="primary">
                   </nb-progress-bar>
                   
@@ -211,13 +211,13 @@
                   <nb-progress-bar [value]="100*(1-features.HomeShotPerMatch_saison/(features.HomeShotPerMatch_saison+features.AwayShotPerMatch_saison))"
                                     [ngClass]="{'win_droite': features.HomeShotPerMatch_saison > features.AwayShotPerMatch_saison, 
                                                 'loss_droite': features.HomeShotPerMatch_saison < features.AwayShotPerMatch_saison, 
-                                                'nul_droite': features.HomeShotPerMatch_saison == features.AwayShotPerMatch_saison}" 
+                                                'nul_droite': features.HomeShotPerMatch_saison === features.AwayShotPerMatch_saison}" 
                                     status="primary">
                     </nb-progress-bar>
                     <nb-progress-bar [value]="100*features.AwayShotPerMatch_saison/(features.HomeShotPerMatch_saison+features.AwayShotPerMatch_saison)"
                                     [ngClass]="{'win_gauche': features.HomeShotPerMatch_saison > features.AwayShotPerMatch_saison, 
                                                 'loss_gauche': features.HomeShotPerMatch_saison < features.AwayShotPerMatch_saison, 
-                                                'nul_gauche': features.HomeShotPerMatch_saison == features.AwayShotPerMatch_saison}" 
+                                                'nul_gauche': features.HomeShotPerMatch_saison === features.AwayShotPerMatch_saison}" 
                                     status="primary">
                   </nb-progress-bar>
                   <span style="margin-left: 10px;">{{features.AwayShotPerMatch_saison}}</span>
@@ -229,13 +229,13 @@
                   <nb-progress-bar [value]="100*(1-features.HomeShotTargetPerMatch_saison/(features.HomeShotTargetPerMatch_saison+features.AwayShotTargetPerMatch_saison))"
                                     [ngClass]="{'win_droite': features.HomeShotTargetPerMatch_saison > features.AwayShotTargetPerMatch_saison, 
                                                 'loss_droite': features.HomeShotTargetPerMatch_saison < features.AwayShotTargetPerMatch_saison, 
-                                                'nul_droite': features.HomeShotTargetPerMatch_saison == features.AwayShotTargetPerMatch_saison}" 
+                                                'nul_droite': features.HomeShotTargetPerMatch_saison === features.AwayShotTargetPerMatch_saison}" 
                                     status="primary">
                     </nb-progress-bar>
                     <nb-progress-bar [value]="100*features.AwayShotTargetPerMatch_saison/(features.HomeShotTargetPerMatch_saison+features.AwayShotTargetPerMatch_saison)"
                                     [ngClass]="{'win_gauche': features.HomeShotTargetPerMatch_saison > features.AwayShotTargetPerMatch_saison, 
                                                 'loss_gauche': features.HomeShotTargetPerMatch_saison < features.AwayShotTargetPerMatch_saison, 
-                                                'nul_gauche': features.HomeShotTargetPerMatch_saison == features.AwayShotTargetPerMatch_saison}" 
+                                                'nul_gauche': features.HomeShotTargetPerMatch_saison === features.AwayShotTargetPerMatch_saison}" 
                                     status="primary">
                   </nb-progress-bar>
                   <span style="margin-left: 10px;">{{features.AwayShotTargetPerMatch_saison}}</span>
@@ -247,13 +247,13 @@
                   <nb-progress-bar [value]="(100-features.HomePossessionMean_saison)"
                                     [ngClass]="{'win_droite': features.HomePossessionMean_saison > features.AwayPossessionMean_saison, 
                                                 'loss_droite': features.HomePossessionMean_saison < features.AwayPossessionMean_saison, 
-                                                'nul_droite': features.HomePossessionMean_saison == features.AwayPossessionMean_saison}" 
+                                                'nul_droite': features.HomePossessionMean_saison === features.AwayPossessionMean_saison}" 
                                     status="primary">
                     </nb-progress-bar>
                     <nb-progress-bar [value]="features.AwayPossessionMean_saison"
                                     [ngClass]="{'win_gauche': features.HomePossessionMean_saison > features.AwayPossessionMean_saison, 
                                                 'loss_gauche': features.HomePossessionMean_saison < features.AwayPossessionMean_saison, 
-                                                'nul_gauche': features.HomePossessionMean_saison == features.AwayPossessionMean_saison}" 
+                                                'nul_gauche': features.HomePossessionMean_saison === features.AwayPossessionMean_saison}" 
                                     status="primary">
                   </nb-progress-bar>
                   <span style="margin-left: 10px;">{{features.AwayPossessionMean_saison}}%</span>
@@ -265,13 +265,13 @@
                   <nb-progress-bar [value]="100*(1-features.HomePassPerMatch_saison/(features.HomePassPerMatch_saison+features.AwayPassPerMatch_saison))"
                                     [ngClass]="{'win_droite': features.HomePassPerMatch_saison > features.AwayPassPerMatch_saison, 
                                                 'loss_droite': features.HomePassPerMatch_saison < features.AwayPassPerMatch_saison, 
-                                                'nul_droite': features.HomePassPerMatch_saison == features.AwayPassPerMatch_saison}" 
+                                                'nul_droite': features.HomePassPerMatch_saison === features.AwayPassPerMatch_saison}" 
                                     status="primary">
                     </nb-progress-bar>
                     <nb-progress-bar [value]="100*features.AwayPassPerMatch_saison/(features.HomePassPerMatch_saison+features.AwayPassPerMatch_saison)"
                                     [ngClass]="{'win_gauche': features.HomePassPerMatch_saison > features.AwayPassPerMatch_saison, 
                                                 'loss_gauche': features.HomePassPerMatch_saison < features.AwayPassPerMatch_saison, 
-                                                'nul_gauche': features.HomePassPerMatch_saison == features.AwayPassPerMatch_saison}" 
+                                                'nul_gauche': features.HomePassPerMatch_saison === features.AwayPassPerMatch_saison}" 
                                     status="primary">
                   </nb-progress-bar>
                   <span style="margin-left: 10px;">{{features.AwayPassPerMatch_saison}}</span>
@@ -284,13 +284,13 @@
                   <nb-progress-bar [value]="100*(1-features.HomeAttacksMean_saison/(features.HomeAttacksMean_saison+features.AwayAttacksMean_saison))"
                                     [ngClass]="{'win_droite': features.HomeAttacksMean_saison > features.AwayAttacksMean_saison, 
                                                 'loss_droite': features.HomeAttacksMean_saison < features.AwayAttacksMean_saison, 
-                                                'nul_droite': features.HomeAttacksMean_saison == features.AwayAttacksMean_saison}" 
+                                                'nul_droite': features.HomeAttacksMean_saison === features.AwayAttacksMean_saison}" 
                                     status="primary">
                     </nb-progress-bar>
                     <nb-progress-bar [value]="100*features.AwayAttacksMean_saison/(features.HomeAttacksMean_saison+features.AwayAttacksMean_saison)"
                                     [ngClass]="{'win_gauche': features.HomeAttacksMean_saison > features.AwayAttacksMean_saison, 
                                                 'loss_gauche': features.HomeAttacksMean_saison < features.AwayAttacksMean_saison, 
-                                                'nul_gauche': features.HomeAttacksMean_saison == features.AwayAttacksMean_saison}" 
+                                                'nul_gauche': features.HomeAttacksMean_saison === features.AwayAttacksMean_saison}" 
                                     status="primary">
                   </nb-progress-bar>
 
@@ -303,13 +303,13 @@
                   <nb-progress-bar [value]="100*(1-features.HomeDangerousAttacksMean_saison/(features.HomeDangerousAttacksMean_saison+features.AwayDangerousAttacksMean_saison))"
                                     [ngClass]="{'win_droite': features.HomeDangerousAttacksMean_saison > features.AwayDangerousAttacksMean_saison, 
                                                 'loss_droite': features.HomeDangerousAttacksMean_saison < features.AwayDangerousAttacksMean_saison, 
-                                                'nul_droite': features.HomeDangerousAttacksMean_saison == features.AwayDangerousAttacksMean_saison}" 
+                                                'nul_droite': features.HomeDangerousAttacksMean_saison === features.AwayDangerousAttacksMean_saison}" 
                                     status="primary">
                     </nb-progress-bar>
                     <nb-progress-bar [value]="100*features.AwayDangerousAttacksMean_saison/(features.HomeDangerousAttacksMean_saison+features.AwayDangerousAttacksMean_saison)"
                                     [ngClass]="{'win_gauche': features.HomeDangerousAttacksMean_saison > features.AwayDangerousAttacksMean_saison, 
                                                 'loss_gauche': features.HomeDangerousAttacksMean_saison < features.AwayDangerousAttacksMean_saison, 
-                                                'nul_gauche': features.HomeDangerousAttacksMean_saison == features.AwayDangerousAttacksMean_saison}" 
+                                                'nul_gauche': features.HomeDangerousAttacksMean_saison === features.AwayDangerousAttacksMean_saison}" 
                                     status="primary">
                   </nb-progress-bar>
                   
@@ -322,13 +322,13 @@
                   <nb-progress-bar [value]="100*(1-features.HomeOffsidesPerMatch_saison/(features.HomeOffsidesPerMatch_saison+features.AwayOffsidesPerMatch_saison))"
                                     [ngClass]="{'win_droite': features.HomeOffsidesPerMatch_saison > features.AwayOffsidesPerMatch_saison, 
                                                 'loss_droite': features.HomeOffsidesPerMatch_saison < features.AwayOffsidesPerMatch_saison, 
-                                                'nul_droite': features.HomeOffsidesPerMatch_saison == features.AwayOffsidesPerMatch_saison}" 
+                                                'nul_droite': features.HomeOffsidesPerMatch_saison === features.AwayOffsidesPerMatch_saison}" 
                                     status="primary">
                     </nb-progress-bar>
                     <nb-progress-bar [value]="100*features.AwayOffsidesPerMatch_saison/(features.HomeOffsidesPerMatch_saison+features.AwayOffsidesPerMatch_saison)"
                                     [ngClass]="{'win_gauche': features.HomeOffsidesPerMatch_saison > features.AwayOffsidesPerMatch_saison, 
                                                 'loss_gauche': features.HomeOffsidesPerMatch_saison < features.AwayOffsidesPerMatch_saison, 
-                                                'nul_gauche': features.HomeOffsidesPerMatch_saison == features.AwayOffsidesPerMatch_saison}" 
+                                                'nul_gauche': features.HomeOffsidesPerMatch_saison === features.AwayOffsidesPerMatch_saison}" 
                                     status="primary">
                   </nb-progress-bar>
                   <span style="margin-left: 10px;">{{features.AwayOffsidesPerMatch_saison}}</span>
@@ -340,13 +340,13 @@
                   <nb-progress-bar [value]="100*(1-features.HomeCornersPerMatch_saison/(features.HomeCornersPerMatch_saison+features.AwayCornersPerMatch_saison))"
                                     [ngClass]="{'win_droite': features.HomeCornersPerMatch_saison > features.AwayCornersPerMatch_saison, 
                                                 'loss_droite': features.HomeCornersPerMatch_saison < features.AwayCornersPerMatch_saison, 
-                                                'nul_droite': features.HomeCornersPerMatch_saison == features.AwayCornersPerMatch_saison}" 
+                                                'nul_droite': features.HomeCornersPerMatch_saison === features.AwayCornersPerMatch_saison}" 
                                     status="primary">
                     </nb-progress-bar>
                     <nb-progress-bar [value]="100*features.AwayCornersPerMatch_saison/(features.HomeCornersPerMatch_saison+features.AwayCornersPerMatch_saison)"
                                     [ngClass]="{'win_gauche': features.HomeCornersPerMatch_saison > features.AwayCornersPerMatch_saison, 
                                                 'loss_gauche': features.HomeCornersPerMatch_saison < features.AwayCornersPerMatch_saison, 
-                                                'nul_gauche': features.HomeCornersPerMatch_saison == features.AwayCornersPerMatch_saison}" 
+                                                'nul_gauche': features.HomeCornersPerMatch_saison === features.AwayCornersPerMatch_saison}" 
                                     status="primary">
                   </nb-progress-bar>
                   <span style="margin-left: 10px;">{{features.AwayCornersPerMatch_saison}}</span>
@@ -358,13 +358,13 @@
                   <nb-progress-bar [value]="100*(1-features.HomeFoulsPerMatch_saison/(features.HomeFoulsPerMatch_saison+features.AwayFoulsPerMatch_saison))"
                                     [ngClass]="{'win_droite': features.HomeFoulsPerMatch_saison > features.AwayFoulsPerMatch_saison, 
                                                 'loss_droite': features.HomeFoulsPerMatch_saison < features.AwayFoulsPerMatch_saison, 
-                                                'nul_droite': features.HomeFoulsPerMatch_saison == features.AwayFoulsPerMatch_saison}" 
+                                                'nul_droite': features.HomeFoulsPerMatch_saison === features.AwayFoulsPerMatch_saison}" 
                                     status="primary">
                     </nb-progress-bar>
                     <nb-progress-bar [value]="100*features.AwayFoulsPerMatch_saison/(features.HomeFoulsPerMatch_saison+features.AwayFoulsPerMatch_saison)"
                                     [ngClass]="{'win_gauche': features.HomeFoulsPerMatch_saison > features.AwayFoulsPerMatch_saison, 
                                                 'loss_gauche': features.HomeFoulsPerMatch_saison < features.AwayFoulsPerMatch_saison, 
-                                                'nul_gauche': features.HomeFoulsPerMatch_saison == features.AwayFoulsPerMatch_saison}" 
+                                                'nul_gauche': features.HomeFoulsPerMatch_saison === features.AwayFoulsPerMatch_saison}" 
                                     status="primary">
                   </nb-progress-bar>
                   <span style="margin-left: 10px;">{{features.AwayFoulsPerMatch_saison}}</span>
@@ -376,13 +376,13 @@
                   <nb-progress-bar [value]="100*(1-features.HomeYellowPerMatch_saison/(features.HomeYellowPerMatch_saison+features.AwayYellowPerMatch_saison))"
                                     [ngClass]="{'win_droite': features.HomeYellowPerMatch_saison > features.AwayYellowPerMatch_saison, 
                                                 'loss_droite': features.HomeYellowPerMatch_saison < features.AwayYellowPerMatch_saison, 
-                                                'nul_droite': features.HomeYellowPerMatch_saison == features.AwayYellowPerMatch_saison}" 
+                                                'nul_droite': features.HomeYellowPerMatch_saison === features.AwayYellowPerMatch_saison}" 
                                     status="primary">
                     </nb-progress-bar>
                     <nb-progress-bar [value]="100*features.AwayYellowPerMatch_saison/(features.HomeYellowPerMatch_saison+features.AwayYellowPerMatch_saison)"
                                     [ngClass]="{'win_gauche': features.HomeYellowPerMatch_saison > features.AwayYellowPerMatch_saison, 
                                                 'loss_gauche': features.HomeYellowPerMatch_saison < features.AwayYellowPerMatch_saison, 
-                                                'nul_gauche': features.HomeYellowPerMatch_saison == features.AwayYellowPerMatch_saison}" 
+                                                'nul_gauche': features.HomeYellowPerMatch_saison === features.AwayYellowPerMatch_saison}" 
                                     status="primary">
                   </nb-progress-bar>
                   <span style="margin-left: 10px;">{{features.AwayYellowPerMatch_saison}}</span>
@@ -394,13 +394,13 @@
                   <nb-progress-bar [value]="100*(1-features.HomeRedPerMatch_saison/(features.HomeRedPerMatch_saison+features.AwayRedPerMatch_saison))"
                                     [ngClass]="{'win_droite': features.HomeRedPerMatch_saison > features.AwayRedPerMatch_saison, 
                                                 'loss_droite': features.HomeRedPerMatch_saison < features.AwayRedPerMatch_saison, 
-                                                'nul_droite': features.HomeRedPerMatch_saison == features.AwayRedPerMatch_saison}" 
+                                                'nul_droite': features.HomeRedPerMatch_saison === features.AwayRedPerMatch_saison}" 
                                     status="primary">
                     </nb-progress-bar>
                     <nb-progress-bar [value]="100*features.AwayRedPerMatch_saison/(features.HomeRedPerMatch_saison+features.AwayRedPerMatch_saison)"
                                     [ngClass]="{'win_gauche': features.HomeRedPerMatch_saison > features.AwayRedPerMatch_saison, 
                                                 'loss_gauche': features.HomeRedPerMatch_saison < features.AwayRedPerMatch_saison, 
-                                                'nul_gauche': features.HomeRedPerMatch_saison == features.AwayRedPerMatch_saison}" 
+                                                'nul_gauche': features.HomeRedPerMatch_saison === features.AwayRedPerMatch_saison}" 
                                     status="primary">
                   </nb-progress-bar>
                   <span style="margin-left: 10px;">{{features.AwayRedPerMatch_saison}}</span>
@@ -412,13 +412,13 @@
                   <nb-progress-bar [value]="100*(1-features.HomeSavesPerMatch_saison/(features.HomeSavesPerMatch_saison+features.AwaySavesPerMatch_saison))"
                                     [ngClass]="{'win_droite': features.HomeSavesPerMatch_saison > features.AwaySavesPerMatch_saison, 
                                                 'loss_droite': features.HomeSavesPerMatch_saison < features.AwaySavesPerMatch_saison, 
-                                                'nul_droite': features.HomeSavesPerMatch_saison == features.AwaySavesPerMatch_saison}" 
+                                                'nul_droite': features.HomeSavesPerMatch_saison === features.AwaySavesPerMatch_saison}" 
                                     status="primary">
                     </nb-progress-bar>
                     <nb-progress-bar [value]="100*features.AwaySavesPerMatch_saison/(features.HomeSavesPerMatch_saison+features.AwaySavesPerMatch_saison)"
                                     [ngClass]="{'win_gauche': features.HomeSavesPerMatch_saison > features.AwaySavesPerMatch_saison, 
                                                 'loss_gauche': features.HomeSavesPerMatch_saison < features.AwaySavesPerMatch_saison, 
-                                                'nul_gauche': features.HomeSavesPerMatch_saison == features.AwaySavesPerMatch_saison}" 
+                                                'nul_gauche': features.HomeSavesPerMatch_saison === features.AwaySavesPerMatch_saison}" 
                                     status="primary">
                   </nb-progress-bar>
                   <span style="margin-left: 10px;">{{features.AwaySavesPerMatch_saison}}</span>
