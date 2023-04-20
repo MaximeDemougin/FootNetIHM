@@ -1,4 +1,4 @@
-import { Component,TemplateRef, ViewChild } from '@angular/core';
+import { Component,TemplateRef, ViewChild , OnInit } from '@angular/core';
 import { NbAuthService } from '@nebular/auth';
 import { NbAuthJWTToken } from '@nebular/auth';
 import { NbDialogService } from '@nebular/theme';
