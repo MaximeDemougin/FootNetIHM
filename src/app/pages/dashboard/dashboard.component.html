@@ -137,7 +137,7 @@
                   <nb-progress-bar [value]="100*(1-features.HomePoints/(features.HomePoints+features.AwayPoints))" 
                                     [ngClass]="{'win_droite': features.HomePoints > features.AwayPoints, 
                                                 'loss_droite': features.HomePoints < features.AwayPoints, 
-                                                'nul_droite': features.HomePoints == features.AwayPoints}" 
+                                                'nul_droite': features.HomePoints === features.AwayPoints}" 
                                     status="primary">
                     </nb-progress-bar>
                     <nb-progress-bar [value]="100*features.AwayPoints/(features.HomePoints+features.AwayPoints)"
