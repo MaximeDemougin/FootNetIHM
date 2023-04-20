@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ServerDataSource } from 'ng2-smart-table';
 
 @Component({
-  selector: 'advanced-example-server',
+  selector: 'ngx-advanced-example-server',
   template: `
     <ng2-smart-table [settings]="settings" [source]="source"></ng2-smart-table>
   `,

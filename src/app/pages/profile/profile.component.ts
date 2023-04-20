@@ -14,7 +14,7 @@ import { NbTokenService } from '@nebular/auth';
   styleUrls: ['./profile.component.scss'],
   templateUrl: './profile.component.html',
 })
-export class ProfileComponent {
+export class ProfileComponent implements OnInit{
   public userName:string
   public picture:string
   payload:any

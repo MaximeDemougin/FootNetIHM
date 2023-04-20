@@ -22,12 +22,12 @@ interface Match {
 }
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'ngx-app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
   providers: [DatePipe]
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit{
   @ViewChild('item', { static: true }) accordion;
   defaultDate: Date;
   clickedAccordion: any;

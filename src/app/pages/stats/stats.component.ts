@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 
 
 @Component({
-  selector: 'stats',
+  selector: 'ngx-stats',
   //changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './stats.component.html'
 })

@@ -8,16 +8,14 @@ import { AccordionDataService } from '../accordion-data/accordion-data.service';
   templateUrl: './accordion-matchs.component.html',
   styleUrls: ['./accordion-matchs.component.scss']
 })
-export class AccordionMatchsComponent implements OnInit {
+export class AccordionMatchsComponent{
   @ViewChild('item', { static: true }) accordion;
   @Input() match!: Match;	
   toggled: boolean = false;
   
   constructor(private accordionDataService: AccordionDataService) { }
 
-  ngOnInit(): void {
 
-  }
   selectedItem: any;
   isSelected(match: any) {
     return match === this.selectedItem;
