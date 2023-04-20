@@ -53,7 +53,7 @@
     <div class="accordion-container">
       <div *ngFor="let id of id_leagues">
         <h1 style="text-align: center;">{{ id }}</h1>
-        <accordion-matchs (click)="clicked = true" *ngFor="let match of getMatchesForLeague(id)" [match]="match"></accordion-matchs>
+        <ngx-accordion-matchs (click)="clicked = true" *ngFor="let match of getMatchesForLeague(id)" [match]="match"></ngx-accordion-matchs>
       </div>
     </div>
   </div>

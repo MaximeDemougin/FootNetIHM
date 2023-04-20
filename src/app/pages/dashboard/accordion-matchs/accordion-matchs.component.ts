@@ -4,7 +4,7 @@ import { AccordionDataService } from '../accordion-data/accordion-data.service';
 
 
 @Component({
-  selector: 'accordion-matchs',
+  selector: 'ngx-accordion-matchs',
   templateUrl: './accordion-matchs.component.html',
   styleUrls: ['./accordion-matchs.component.scss']
 })
