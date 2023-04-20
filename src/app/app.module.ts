@@ -24,6 +24,7 @@ import {
   
 } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
+import { endpointService } from './pages/pages.service';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -47,6 +48,7 @@ import { NbEvaIconsModule } from '@nebular/eva-icons';
     NbEvaIconsModule,
     
   ],
+  
   bootstrap: [AppComponent],
 })
 export class AppModule {

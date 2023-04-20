@@ -108,7 +108,8 @@ export const NB_CORE_PROVIDERS = [
     strategies: [
       NbPasswordAuthStrategy.setup({
         name: 'email',
-        baseEndpoint: 'http://127.0.0.1:5000',
+        //baseEndpoint: 'http://127.0.0.1:5000',
+        baseEndpoint: 'https://footnetapi.onrender.com',
         token: {
           class: NbAuthJWTToken,
           key: 'token', // this parameter tells where to look for the token

@@ -1,0 +1,54 @@
+<div>
+  <div>
+    <nb-card>
+      <nb-card-header>Using the Grid</nb-card-header>
+      <nb-card-body>
+        <form (ngSubmit)="changes(inputName.value,newPicture.value)">
+          <div class="form-group row">
+            <label for="inputName" class="label col-sm-3 col-form-label">Username</label>
+            <div class="col-sm-9">
+              <input type="text" nbInput fullWidth id="inputName" #inputName [value]="userName">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPicture" class="label col-sm-3 col-form-label">Picture link</label>
+            <div class="col-sm-9">
+              <input type="link" nbInput fullWidth id="inputPicture" #newPicture [value]="picture">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputPassword2" class="label col-sm-3 col-form-label">Password</label>
+            <div class="col-sm-9">
+              <input type="password" nbInput fullWidth id="inputPassword2" placeholder="Password">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 label">Filter sur le type</label>
+            <div class="col-sm-9">
+              <nb-checkbox status="info" [checked]="true" >Home</nb-checkbox>
+              <nb-checkbox status="info" [checked]="true" style = "margin-left: 10px;">Draw</nb-checkbox>
+              <nb-checkbox status="info" [checked]="true" style = "margin-left: 10px;">Away</nb-checkbox>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 label">Championnats</label>
+            <div class="col-sm-9">
+              <nb-select multiple placeholder="Choix des leagues à afficher">
+                <nb-option value="1">Option 1</nb-option>
+                <nb-option value="2">Option 2</nb-option>
+                <nb-option value="3">Option 3</nb-option>
+                <nb-option value="4">Option 4</nb-option>
+              </nb-select>
+            </div>
+          </div>
+         
+          <div class="form-group row">
+            <div class="offset-sm-3 col-sm-9">
+              <button type="submit" nbButton status="primary">Save changes</button>
+            </div>
+          </div>
+        </form>
+      </nb-card-body>
+    </nb-card>
+</div>
+

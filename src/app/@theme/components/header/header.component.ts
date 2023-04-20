@@ -7,6 +7,10 @@ import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { NbAuthJWTToken, NbAuthService } from '@nebular/auth';
 import { Router } from '@angular/router';
+import { endpointService } from '../../../pages/pages.service';
+import { HttpClient, HttpHeaders  } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
 @Component({
   selector: 'ngx-header',
   styleUrls: ['./header.component.scss'],
@@ -51,8 +55,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private layoutService: LayoutService,
               private breakpointService: NbMediaBreakpointsService,
               private authService: NbAuthService,
-              private router: Router,) {
-                
+              private router: Router, public EndpointService: endpointService,private http: HttpClient, ) {
+        
                 this.authService.onTokenChange().subscribe((token: NbAuthJWTToken) => {
       
         if (token.isValid()) {
@@ -64,6 +68,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         
       });
   }
+
 
   onItemSelection( title ) {
     if ( title === 'Log out' ) {
@@ -77,10 +82,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
       
     } else if ( title === 'Profile' ) {
-      // Do something on Profile
       console.log('Profile Clicked ')
+      this.router.navigate(['/auth/change']);
+      }
     }
-  }
+    
+
   authenticated: boolean = false;
   ngOnInit() {
     this.currentTheme = this.themeService.currentTheme;

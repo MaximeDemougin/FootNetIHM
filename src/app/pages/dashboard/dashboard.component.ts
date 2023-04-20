@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 import { NbDateService } from '@nebular/theme';
 import { AccordionDataService } from './accordion-data/accordion-data.service';
 import { NbDialogService } from '@nebular/theme';
+import { endpointService } from '../pages.service';
 
 interface Match {
   Id_match: string;
@@ -57,7 +58,7 @@ export class DashboardComponent {
   show: boolean = false;
   selectedTabMatchs: string = 'Forme';
   // endpoint:string = 'https://footnetapi.onrender.com'
-  endpoint:string = 'http://127.0.0.1:5000'
+  //endpoint:string = 'http://127.0.0.1:5000'
 
   today = new Date();
   day = this.today.getDate().toString().padStart(2, "0");
@@ -65,7 +66,7 @@ export class DashboardComponent {
   year = this.today.getFullYear();
 
   constructor(private dialogService: NbDialogService, private http: HttpClient, private cdr: ChangeDetectorRef,private datePipe: DatePipe,
-    private dateService: NbDateService<Date>,private accordionDataService: AccordionDataService) {
+    private dateService: NbDateService<Date>,private accordionDataService: AccordionDataService, public EndpointService: endpointService) {
     this.defaultDate = new Date();
     this.accordionDataService.currentAccordionData.subscribe(data => {
       this.accordionData = data;
@@ -73,7 +74,7 @@ export class DashboardComponent {
       if (typeof this.accordionData.Id_match !== "undefined") {
 
         // if (this.selectedTabMatchs == 'Composition') {
-        this.http.get(this.endpoint+'/get_compos_match?id='+this.accordionData.Id_match, { observe: 'response' }).subscribe((res) => {
+        this.http.get(this.EndpointService.endpoint+'/get_compos_match?id='+this.accordionData.Id_match, { observe: 'response' }).subscribe((res) => {
         this.teamComposition = res.body;
         this.homePlayers_titu = this.teamComposition.titulaire.home;
         this.awayPlayers_titu = this.teamComposition.titulaire.away;
@@ -91,7 +92,7 @@ export class DashboardComponent {
     // }
     // if (this.selectedTabMatchs == 'Statistiques') {
 
-      this.http.get(this.endpoint+'/get_features_match?id='+this.accordionData.Id_match, { observe: 'response' }).subscribe((res) => {
+      this.http.get(this.EndpointService.endpoint+'/get_features_match?id='+this.accordionData.Id_match, { observe: 'response' }).subscribe((res) => {
         
         this.features = res.body;
 
@@ -99,7 +100,7 @@ export class DashboardComponent {
     // }
     //if (this.selectedTabMatchs == 'Forme') {
       
-      this.http.get(this.endpoint+'/get_histo?home_id='+this.accordionData.Id_homeTeam+'&away_id='+this.accordionData.Id_awayTeam+'&date='+this.accordionData.Date_match, { observe: 'response' }).subscribe((res) => {
+      this.http.get(this.EndpointService.endpoint+'/get_histo?home_id='+this.accordionData.Id_homeTeam+'&away_id='+this.accordionData.Id_awayTeam+'&date='+this.accordionData.Date_match, { observe: 'response' }).subscribe((res) => {
         
         this.histo = res.body;
         console.log(this.histo);
@@ -167,7 +168,7 @@ export class DashboardComponent {
   }
 
   ngOnInit() {
-    this.http.get(this.endpoint+'/get_match_day?date='+`${this.year}-${this.month}-${this.day}`, { observe: 'response' }).subscribe((res) => {
+    this.http.get(this.EndpointService.endpoint+'/get_match_day?date='+`${this.year}-${this.month}-${this.day}`, { observe: 'response' }).subscribe((res) => {
       this.data = res.body;
       this.id_leagues = Object.keys(this.data);
 
@@ -193,7 +194,7 @@ export class DashboardComponent {
     const formattedDate = this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd');
     console.log('Formatted Date: ', formattedDate);
 
-    this.http.get(this.endpoint+'/get_match_day?date='+formattedDate, { observe: 'response' }).subscribe((res) => {
+    this.http.get(this.EndpointService.endpoint+'/get_match_day?date='+formattedDate, { observe: 'response' }).subscribe((res) => {
       this.data = res.body;
       this.id_leagues = Object.keys(this.data);
 
