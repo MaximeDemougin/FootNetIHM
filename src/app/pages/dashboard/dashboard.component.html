@@ -40,9 +40,11 @@
       <input nbInput placeholder="Pick Date" [nbDatepicker]="dateTimePicker" [(ngModel)]="defaultDate">
       <nb-datepicker #dateTimePicker (dateChange)="onDateChange($event)"></nb-datepicker>
     </div>
+    <!--
     <div>
-      <button nbButton (click)="open(dialog)" status="primary">Filtrer les championnat</button>
+      <button nbButton (click)="open(dialog)" status="primary">Filtrer les championnats</button>
     </div>
+    //-->
 </nb-card-body>
 
 
@@ -67,7 +69,7 @@
     font-size: 25px;">
 
       <nb-card-body>
-        <h3 style="text-align: center;">Cliquer sur un match pour afficher les informations associées</h3>
+        <h3 style="text-align: center;">Cliquez sur un match pour afficher les informations associées</h3>
       </nb-card-body>
     </nb-card>
 

@@ -6,7 +6,8 @@ import { NbDateService } from '@nebular/theme';
 import { AccordionDataService } from './accordion-data/accordion-data.service';
 import { NbDialogService } from '@nebular/theme';
 import { endpointService } from '../pages.service';
-
+import { userService } from '../users.service';
+import { NbAuthService, NbAuthJWTToken } from '@nebular/auth';
 interface Match {
   Id_match: string;
   Id_league: string;
@@ -65,8 +66,8 @@ export class DashboardComponent implements OnInit{
   month = (this.today.getMonth() + 1).toString().padStart(2, "0"); // JavaScript uses 0-based months, so add 1
   year = this.today.getFullYear();
 
-  constructor(private dialogService: NbDialogService, private http: HttpClient, private cdr: ChangeDetectorRef,private datePipe: DatePipe,
-    private dateService: NbDateService<Date>,private accordionDataService: AccordionDataService, public EndpointService: endpointService) {
+  constructor(private dialogService: NbDialogService,private authService: NbAuthService, private http: HttpClient, private cdr: ChangeDetectorRef,private datePipe: DatePipe,
+    private dateService: NbDateService<Date>,private accordionDataService: AccordionDataService, public UserService: userService,public EndpointService: endpointService) {
     this.defaultDate = new Date();
     this.accordionDataService.currentAccordionData.subscribe(data => {
       this.accordionData = data;
@@ -129,7 +130,7 @@ export class DashboardComponent implements OnInit{
   removed_leagues: string[] = [];
   data: any;
   matchesByLeague: any;
-
+  user:any;
   getIcon(result: number): string {
     switch (result) {
       case 1:
@@ -155,7 +156,6 @@ export class DashboardComponent implements OnInit{
     }
   }
   onTagRemove(tag: NbTagComponent): void {
-    console.log(this.clickedAccordion)
     const removedLeague = this.id_leagues.splice(this.id_leagues.indexOf(tag.text), 1);
     this.removed_leagues.push(removedLeague[0]);
     this.removed_leagues.sort();
@@ -168,22 +168,52 @@ export class DashboardComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.http.get(this.EndpointService.endpoint+'/get_match_day?date='+`${this.year}-${this.month}-${this.day}`, { observe: 'response' }).subscribe((res) => {
-      this.data = res.body;
-      this.id_leagues = Object.keys(this.data);
-
-      // create an object to store matches for each league
-      const matchesByLeague: { [id: string]: Match[] } = {};
-
-      // iterate over each league and assign matches to a separate array
-      this.id_leagues.forEach((id) => {
-        matchesByLeague[id] = this.data[id];
-      });
-
-      // assign the matches to the component property
-      this.matchesByLeague = matchesByLeague;
-    });
+    // check if the user is authenticated
+    this.authService.onTokenChange()
+    .subscribe((token: NbAuthJWTToken) => {
+    
+      if (token.isValid()) {
+        // if the token is valid, get the user info and fetch the matches
+        this.UserService.getUserInfo().subscribe(user => {
+          this.user = user;
+          this.http.get(this.EndpointService.endpoint+'/get_match_day?date='+`${this.year}-${this.month}-${this.day}`, { observe: 'response' }).subscribe((res) => {
+            this.data = res.body;
+            this.id_leagues = Object.keys(this.data);
+            console.log(this.id_leagues)
+            this.id_leagues = this.id_leagues.filter(league => !this.user.id_leagues.includes(league));
+            console.log(this.id_leagues)
+            // create an object to store matches for each league
+            const matchesByLeague: { [id: string]: Match[] } = {};
+    
+            // iterate over each league and assign matches to a separate array
+            this.id_leagues.forEach((id) => {
+              matchesByLeague[id] = this.data[id];
+            });
+    
+            // assign the matches to the component property
+            this.matchesByLeague = matchesByLeague;
+          });
+        });
+    } else {
+        // if the token is valid, get the user info and fetch the matches
+          this.http.get(this.EndpointService.endpoint+'/get_match_day?date='+`${this.year}-${this.month}-${this.day}`, { observe: 'response' }).subscribe((res) => {
+            this.data = res.body;
+            this.id_leagues = Object.keys(this.data);
+            // create an object to store matches for each league
+            const matchesByLeague: { [id: string]: Match[] } = {};
+    
+            // iterate over each league and assign matches to a separate array
+            this.id_leagues.forEach((id) => {
+              matchesByLeague[id] = this.data[id];
+            });
+    
+            // assign the matches to the component property
+            this.matchesByLeague = matchesByLeague;
+          });
+    }
+  });
   }
+  
 
   getMatchesForLeague(id: string): Match[] {
     return this.matchesByLeague[id];

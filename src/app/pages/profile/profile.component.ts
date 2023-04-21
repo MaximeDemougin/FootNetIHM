@@ -1,11 +1,12 @@
-import { Component,TemplateRef, ViewChild , OnInit } from '@angular/core';
+import { Component,TemplateRef, ViewChild , OnInit,ChangeDetectorRef  } from '@angular/core';
 import { NbAuthService } from '@nebular/auth';
 import { NbAuthJWTToken } from '@nebular/auth';
 import { NbDialogService } from '@nebular/theme';
 import { endpointService } from '../pages.service';
+import { userService } from '../users.service';
 import { HttpClient, HttpHeaders  } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { NbSelectComponent } from '@nebular/theme';
 
 import { NbTokenService } from '@nebular/auth';
 
@@ -17,10 +18,18 @@ import { NbTokenService } from '@nebular/auth';
 export class ProfileComponent implements OnInit{
   public userName:string
   public picture:string
+
+  message:string
+  ok:boolean = true
+  showMessages:boolean = false
   payload:any
+  all_leagues:any
+  leagues:any 
+  data:any
+  user:any
   constructor(private authService: NbAuthService,private dialogService: NbDialogService,
-             public EndpointService: endpointService,private http: HttpClient,
-             private tokenService: NbTokenService,) {}
+             public EndpointService: endpointService,public UserService: userService,private http: HttpClient,
+             private tokenService: NbTokenService,private cdr: ChangeDetectorRef,) {}
 
 
   createPostRequest(data: any): Observable<any> {
@@ -29,43 +38,62 @@ export class ProfileComponent implements OnInit{
     return this.http.post<any>(url, data);
   }
 
-  getUserInfo(): any {
-    const token = this.authService.getToken();
-    this.authService.getToken().subscribe((token: NbAuthJWTToken) => {
-      this.payload = token.getPayload()
-      console.log
-      console.log(this.payload)
-      this.userName = this.payload.name
-      this.picture = this.payload.picture
-      return token.getPayload();
-    })
+  user_settings:any
+
+  //userLeagues = ['Premier League', 'Serie A'];
+
+  isInUserLeagues(league: string) {
+    //console.log(this.userLeagues.includes(league))
+    return this.user.id_leagues.includes(league);
+  }
+
+  async ngOnInit() {
+    this.UserService.getUserInfo().subscribe(user => {
+      this.user = user;
+      console.log(this.user);
+      this.http.get(this.EndpointService.endpoint+'/get_leagues_used', { observe: 'response' }).subscribe((res) => {
+        console.log(this.user)
+        this.all_leagues = res.body;
+        this.leagues = this.all_leagues.filter(league => !this.user.id_leagues.includes(league));
+        console.log(this.leagues)
+      })
+      this.cdr.detectChanges(); // Trigger change detection
+    });
     
-   
-  }
-
-  ngOnInit() {
-    this.getUserInfo()
 
   }
+
 
   open(dialog: TemplateRef<any>) {
     this.dialogService.open(dialog, { context: 'this is some additional data passed to dialog' });
   }
 
+
+  selectedItems: any[] = [];
+  onSelected(selectedItems: any[]) {
+    this.selectedItems = this.all_leagues.filter(league => !selectedItems.includes(league));
+    console.log(this.selectedItems);
+  }
+
   changes(inputName: string,newPicture: string){
     this.authService.getToken().subscribe((token: NbAuthJWTToken) => {
-      console.log(inputName)
-      const postData = {userName: inputName,picture : newPicture,token : token };
+
+      const postData = {userName: inputName,picture : newPicture,id_leagues : this.selectedItems,token : token };
       this.createPostRequest(postData).subscribe(
       response => {
         console.log(response.token);
         const token = new NbAuthJWTToken(response.token,"email");
         console.log(token)
         this.tokenService.set(token)
-  .subscribe(token => {});
+  .subscribe(token => {
+    this.ok = true;
+    this.showMessages = true;
+  });
 
       },
       error => {
+        this.ok = false;
+        this.showMessages = true;
         console.log(error);
       }
     );

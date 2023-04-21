@@ -9,6 +9,7 @@ import {
   NbRadioModule,
   NbSelectModule,
   NbUserModule,
+  NbAlertModule,
 } from '@nebular/theme';
 
 import { ThemeModule } from '../../@theme/theme.module';
@@ -29,6 +30,7 @@ import { ProfileComponent } from './profile.component';
     NbSelectModule,
     NbIconModule,
     ngFormsModule,
+    NbAlertModule,
   ],
   declarations: [
     ProfileComponent
