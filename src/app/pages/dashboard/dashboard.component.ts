@@ -224,21 +224,47 @@ export class DashboardComponent implements OnInit{
     const formattedDate = this.datePipe.transform(this.selectedDate, 'yyyy-MM-dd');
     console.log('Formatted Date: ', formattedDate);
 
-    this.http.get(this.EndpointService.endpoint+'/get_match_day?date='+formattedDate, { observe: 'response' }).subscribe((res) => {
-      this.data = res.body;
-      this.id_leagues = Object.keys(this.data);
-
-      // create an object to store matches for each league
-      const matchesByLeague: { [id: string]: Match[] } = {};
-
-      // iterate over each league and assign matches to a separate array
-      this.id_leagues.forEach((id) => {
-        matchesByLeague[id] = this.data[id];
+    this.authService.onTokenChange()
+    .subscribe((token: NbAuthJWTToken) => {
+    
+      if (token.isValid()) {
+        // if the token is valid, get the user info and fetch the matches
+        this.UserService.getUserInfo().subscribe(user => {
+          this.user = user;
+          this.http.get(this.EndpointService.endpoint+'/get_match_day?date='+formattedDate, { observe: 'response' }).subscribe((res) => {
+            this.data = res.body;
+            this.id_leagues = Object.keys(this.data);
+            this.id_leagues = this.id_leagues.filter(league => !this.user.id_leagues.includes(league));
+            // create an object to store matches for each league
+            const matchesByLeague: { [id: string]: Match[] } = {};
+    
+            // iterate over each league and assign matches to a separate array
+            this.id_leagues.forEach((id) => {
+              matchesByLeague[id] = this.data[id];
+            });
+    
+            // assign the matches to the component property
+            this.matchesByLeague = matchesByLeague;
+          });
+        });
+    } else {
+      this.http.get(this.EndpointService.endpoint+'/get_match_day?date='+formattedDate, { observe: 'response' }).subscribe((res) => {
+        this.data = res.body;
+        this.id_leagues = Object.keys(this.data);
+  
+        // create an object to store matches for each league
+        const matchesByLeague: { [id: string]: Match[] } = {};
+  
+        // iterate over each league and assign matches to a separate array
+        this.id_leagues.forEach((id) => {
+          matchesByLeague[id] = this.data[id];
+        });
+  
+        // assign the matches to the component property
+        this.matchesByLeague = matchesByLeague;
       });
-
-      // assign the matches to the component property
-      this.matchesByLeague = matchesByLeague;
-    });
+    }
+  });
   }
 
   open(dialog: TemplateRef<any>) {
