@@ -41,7 +41,8 @@ export class userService {
               'userName':this.payload.name,
               'picture':this.payload.picture,
               'id_leagues':response.id_leagues,
-              'strategy':response.strategy 
+              'strategy':response.strategy,
+              'rangeCotes':response.rangeCotes,
             };
             console.log(this.userInfos);
             observer.next(this.userInfos); // emit the userInfos object

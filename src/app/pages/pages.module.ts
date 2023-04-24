@@ -9,7 +9,8 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { NbButtonModule } from '@nebular/theme';
 import { StatsModule } from './stats/stats.module';
 import { NbIconModule } from '@nebular/theme';
-
+import { ButtonModule } from 'primeng/button';
+import { SelectButtonModule } from 'primeng/selectbutton';
 @NgModule({
   imports: [
     PagesRoutingModule,
@@ -20,6 +21,8 @@ import { NbIconModule } from '@nebular/theme';
     StatsModule,
     NbIconModule,
     FormsModule,
+    ButtonModule,
+    SelectButtonModule,
   ],
   declarations: [
     PagesComponent,

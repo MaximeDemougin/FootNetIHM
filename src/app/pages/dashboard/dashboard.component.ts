@@ -191,6 +191,41 @@ export class DashboardComponent implements OnInit{
             });
     
             // assign the matches to the component property
+            console.log(matchesByLeague)
+
+            // Assuming your JSON object is stored in a variable called 'data'
+            for (const league in matchesByLeague) {
+              if (matchesByLeague.hasOwnProperty(league)) {
+                // Get the array of matches for the current league
+                const matches = matchesByLeague[league];
+                
+                // Filter the matches based on the value of the 'predi' variable
+                console.log(matches)
+                const filteredMatches = matches.filter(match => {
+                  const predi = match['predi'];
+                  const homeMax = match['home_max'];
+                  const drawMax = match['draw_max'];
+                  const awayMax = match['away_max'];
+                  
+                  let maxOdds = 0;
+                  if (predi === 2) {
+                    maxOdds = homeMax;
+                  } else if (predi === 1) {
+                    maxOdds = drawMax;
+                  } else if (predi === 0) {
+                    maxOdds = awayMax;
+                  }
+                  
+                  return this.user.strategy.includes(predi) && 
+                          maxOdds >= this.user.rangeCotes[0] && 
+                          maxOdds <= this.user.rangeCotes[1]
+                });
+                
+                // Update the league property of the JSON object with the filtered matches
+                matchesByLeague[league] = filteredMatches;
+              }
+            }
+
             this.matchesByLeague = matchesByLeague;
           });
         });
@@ -206,7 +241,7 @@ export class DashboardComponent implements OnInit{
             this.id_leagues.forEach((id) => {
               matchesByLeague[id] = this.data[id];
             });
-    
+            
             // assign the matches to the component property
             this.matchesByLeague = matchesByLeague;
           });
@@ -242,7 +277,48 @@ export class DashboardComponent implements OnInit{
             this.id_leagues.forEach((id) => {
               matchesByLeague[id] = this.data[id];
             });
-    
+            // Assuming your JSON object is stored in a variable called 'data'
+            for (const league in matchesByLeague) {
+              if (matchesByLeague.hasOwnProperty(league)) {
+                // Get the array of matches for the current league
+                const matches = matchesByLeague[league];
+                
+                // Filter the matches based on the value of the 'predi' variable
+                console.log(matches)
+                for (const league in matchesByLeague) {
+                  if (matchesByLeague.hasOwnProperty(league)) {
+                    // Get the array of matches for the current league
+                    const matches = matchesByLeague[league];
+                    
+                    // Filter the matches based on the value of the 'predi' variable
+                    console.log(matches)
+                    const filteredMatches = matches.filter(match => {
+                      const predi = match['predi'];
+                      const homeMax = match['home_max'];
+                      const drawMax = match['draw_max'];
+                      const awayMax = match['away_max'];
+                      
+                      let maxOdds = 0;
+                      if (predi === 2) {
+                        maxOdds = homeMax;
+                      } else if (predi === 1) {
+                        maxOdds = drawMax;
+                      } else if (predi === 0) {
+                        maxOdds = awayMax;
+                      }
+                      
+                      return this.user.strategy.includes(predi) && 
+                              maxOdds >= this.user.rangeCotes[0] && 
+                              maxOdds <= this.user.rangeCotes[1]
+                    });
+                    
+                    // Update the league property of the JSON object with the filtered matches
+                    matchesByLeague[league] = filteredMatches;
+                  }
+                }
+                
+              }
+            }
             // assign the matches to the component property
             this.matchesByLeague = matchesByLeague;
           });

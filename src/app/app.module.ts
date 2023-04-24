@@ -11,6 +11,7 @@ import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { ButtonModule } from 'primeng/button';
 import {
   NbChatModule,
   NbDatepickerModule,
@@ -46,6 +47,7 @@ import { endpointService } from './pages/pages.service';
     CoreModule.forRoot(),
     ThemeModule.forRoot(),
     NbEvaIconsModule,
+    ButtonModule,
     
   ],
   

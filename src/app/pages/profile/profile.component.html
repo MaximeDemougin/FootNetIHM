@@ -16,7 +16,7 @@
             <li class="alert-message">It worked</li>
           </ul>
         </nb-alert>
-        <form *ngIf="user?.id_leagues" (ngSubmit)="changes(inputName.value,newPicture.value)">
+        <div *ngIf="user?.id_leagues" >
           <div class="form-group row">
             <label for="inputName" class="label col-sm-3 col-form-label">Username</label>
             <div class="col-sm-9">
@@ -38,9 +38,7 @@
           <div class="form-group row">
             <label class="col-sm-3 label">Filter sur le type</label>
             <div class="col-sm-9">
-              <nb-checkbox status="info" [checked]="true" >Home</nb-checkbox>
-              <nb-checkbox status="info" [checked]="true" style = "margin-left: 10px;">Draw</nb-checkbox>
-              <nb-checkbox status="info" [checked]="true" style = "margin-left: 10px;">Away</nb-checkbox>
+              <p-selectButton [options]="strategy" [(ngModel)]="value" [multiple]="true" optionLabel="name" optionValue="value"></p-selectButton>
             </div>
           </div>
           <div class="form-group row">
@@ -51,14 +49,21 @@
               </nb-select>
             </div>
           </div>
-         
-          <div class="form-group row">
-            <div class="offset-sm-3 col-sm-9">
-              <button type="submit" nbButton status="primary">Save changes</button>
+          <div *ngIf="rangeValues !== undefined" class="form-group row">
+            <label class="col-sm-3 label">Cotes</label>
+            <div class="col-sm-9">
+              <h5>Range: {{rangeValues[0] + ' - ' + rangeValues[1]}}</h5>
+              <p-slider [(ngModel)]="rangeValues" [range]="true" [step] = "0.1"></p-slider>
             </div>
           </div>
-        </form>
+          <div class="form-group row">
+            <div class="offset-sm-3 col-sm-9">
+              <button nbButton  (click) ="changes(inputName.value,newPicture.value)" status="primary">Save changes</button>
+            </div>
+          </div>
+        </div>
       </nb-card-body>
     </nb-card>
 </div>
+
 

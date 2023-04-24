@@ -40,8 +40,14 @@ export class ProfileComponent implements OnInit{
 
   user_settings:any
 
+  value: [];
+  strategy: any[] = [
+        { name: 'Home', value: 2 },
+        { name: 'Draw', value: 1 },
+        { name: 'Away', value: 0 }
+    ];
+  rangeValues: number[] = [1, 10];
   //userLeagues = ['Premier League', 'Serie A'];
-
   isInUserLeagues(league: string) {
     //console.log(this.userLeagues.includes(league))
     return this.user.id_leagues.includes(league);
@@ -57,6 +63,10 @@ export class ProfileComponent implements OnInit{
         this.leagues = this.all_leagues.filter(league => !this.user.id_leagues.includes(league));
         console.log(this.leagues)
       })
+      this.value = this.user.strategy
+      console.log(this.user.rangeCotes)
+      this.rangeValues = this.user.rangeCotes
+      console.log(this.rangeValues)
       this.cdr.detectChanges(); // Trigger change detection
     });
     
@@ -76,9 +86,11 @@ export class ProfileComponent implements OnInit{
   }
 
   changes(inputName: string,newPicture: string){
+    console.log(this.value)
     this.authService.getToken().subscribe((token: NbAuthJWTToken) => {
 
-      const postData = {userName: inputName,picture : newPicture,id_leagues : this.selectedItems,token : token };
+      const postData = {userName: inputName,picture : newPicture,id_leagues : this.selectedItems,strategy:this.value,rangeCotes:this.rangeValues,token : token };
+      console.log(postData)
       this.createPostRequest(postData).subscribe(
       response => {
         console.log(response.token);
