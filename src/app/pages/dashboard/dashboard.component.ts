@@ -66,6 +66,15 @@ export class DashboardComponent implements OnInit{
   month = (this.today.getMonth() + 1).toString().padStart(2, "0"); // JavaScript uses 0-based months, so add 1
   year = this.today.getFullYear();
 
+  user_settings:any
+
+  value: number[];
+  strategy: any[] = [
+        { name: 'Home', value: 2 },
+        { name: 'Draw', value: 1 },
+        { name: 'Away', value: 0 }
+    ];
+  rangeValues: number[] = [1, 10];
   constructor(private dialogService: NbDialogService,private authService: NbAuthService, private http: HttpClient, private cdr: ChangeDetectorRef,private datePipe: DatePipe,
     private dateService: NbDateService<Date>,private accordionDataService: AccordionDataService, public UserService: userService,public EndpointService: endpointService) {
     this.defaultDate = new Date();
@@ -166,7 +175,14 @@ export class DashboardComponent implements OnInit{
     this.id_leagues.push(addedLeague[0]);
     this.id_leagues.sort();
   }
+  all_leagues: string[] = [];
 
+  selectedItems: any[] = [];
+  onSelected(selectedItems: any[]) {
+    this.selectedItems = this.all_leagues.filter(league => !selectedItems.includes(league));
+    console.log(this.selectedItems);
+  }
+  all_matches: any;
   ngOnInit() {
     // check if the user is authenticated
     this.authService.onTokenChange()
@@ -178,10 +194,16 @@ export class DashboardComponent implements OnInit{
           this.user = user;
           this.http.get(this.EndpointService.endpoint+'/get_match_day?date='+`${this.year}-${this.month}-${this.day}`, { observe: 'response' }).subscribe((res) => {
             this.data = res.body;
+            console.log("Je viens là");
+            this.all_matches = this.data
+            this.value = this.user.strategy
+            this.rangeValues = this.user.rangeCotes
+
             this.id_leagues = Object.keys(this.data);
-            console.log(this.id_leagues)
+            this.all_leagues = this.id_leagues;
             this.id_leagues = this.id_leagues.filter(league => !this.user.id_leagues.includes(league));
-            console.log(this.id_leagues)
+            this.id_leagues.sort();
+            // console.log(this.id_leagues)
             // create an object to store matches for each league
             const matchesByLeague: { [id: string]: Match[] } = {};
     
@@ -189,9 +211,10 @@ export class DashboardComponent implements OnInit{
             this.id_leagues.forEach((id) => {
               matchesByLeague[id] = this.data[id];
             });
+            // this.all_matches = matchesByLeague
     
             // assign the matches to the component property
-            console.log(matchesByLeague)
+            // console.log(matchesByLeague)
 
             // Assuming your JSON object is stored in a variable called 'data'
             for (const league in matchesByLeague) {
@@ -200,7 +223,7 @@ export class DashboardComponent implements OnInit{
                 const matches = matchesByLeague[league];
                 
                 // Filter the matches based on the value of the 'predi' variable
-                console.log(matches)
+                // console.log(matches)
                 const filteredMatches = matches.filter(match => {
                   const predi = match['predi'];
                   const homeMax = match['home_max'];
@@ -216,7 +239,7 @@ export class DashboardComponent implements OnInit{
                     maxOdds = awayMax;
                   }
                   
-                  return this.user.strategy.includes(predi) && 
+                  return this.value.includes(predi) && 
                           maxOdds >= this.user.rangeCotes[0] && 
                           maxOdds <= this.user.rangeCotes[1]
                 });
@@ -228,6 +251,7 @@ export class DashboardComponent implements OnInit{
 
             this.matchesByLeague = matchesByLeague;
           });
+          this.cdr.detectChanges(); // Trigger change detection
         });
     } else {
         // if the token is valid, get the user info and fetch the matches
@@ -249,6 +273,47 @@ export class DashboardComponent implements OnInit{
   });
   }
   
+  onChangeStrategy(event) {
+    this.value = event.value;
+    console.log("Je viens changer de strategy : ",this.value)
+    console.log(this.all_matches)
+    const matchesByLeague = { ...this.all_matches };
+
+    for (const league in matchesByLeague) {
+      if (matchesByLeague.hasOwnProperty(league)) {
+        // Get the array of matches for the current league
+        const matches = matchesByLeague[league];
+        
+        // Filter the matches based on the value of the 'predi' variable
+        // console.log(matches)
+        const filteredMatches = matches.filter(match => {
+          const predi = match['predi'];
+          const homeMax = match['home_max'];
+          const drawMax = match['draw_max'];
+          const awayMax = match['away_max'];
+          
+          let maxOdds = 0;
+          if (predi === 2) {
+            maxOdds = homeMax;
+          } else if (predi === 1) {
+            maxOdds = drawMax;
+          } else if (predi === 0) {
+            maxOdds = awayMax;
+          }
+          
+          return this.value.includes(predi) && 
+                  maxOdds >= this.user.rangeCotes[0] && 
+                  maxOdds <= this.user.rangeCotes[1]
+        });
+        
+        // Update the league property of the JSON object with the filtered matches
+        matchesByLeague[league] = filteredMatches;
+      }
+    }
+    console.log("J'ai fini ",this.all_matches)
+
+    this.matchesByLeague = matchesByLeague;
+  }
 
   getMatchesForLeague(id: string): Match[] {
     return this.matchesByLeague[id];
@@ -268,8 +333,13 @@ export class DashboardComponent implements OnInit{
           this.user = user;
           this.http.get(this.EndpointService.endpoint+'/get_match_day?date='+formattedDate, { observe: 'response' }).subscribe((res) => {
             this.data = res.body;
+            console.log("Je viens ici")
+            this.all_matches = this.data
             this.id_leagues = Object.keys(this.data);
+            this.all_leagues = this.id_leagues;
             this.id_leagues = this.id_leagues.filter(league => !this.user.id_leagues.includes(league));
+            this.id_leagues.sort();
+            console.log(this.id_leagues)
             // create an object to store matches for each league
             const matchesByLeague: { [id: string]: Match[] } = {};
     
@@ -277,6 +347,7 @@ export class DashboardComponent implements OnInit{
             this.id_leagues.forEach((id) => {
               matchesByLeague[id] = this.data[id];
             });
+            
             // Assuming your JSON object is stored in a variable called 'data'
             for (const league in matchesByLeague) {
               if (matchesByLeague.hasOwnProperty(league)) {
@@ -284,14 +355,14 @@ export class DashboardComponent implements OnInit{
                 const matches = matchesByLeague[league];
                 
                 // Filter the matches based on the value of the 'predi' variable
-                console.log(matches)
+                // console.log(matches)
                 for (const league in matchesByLeague) {
                   if (matchesByLeague.hasOwnProperty(league)) {
                     // Get the array of matches for the current league
                     const matches = matchesByLeague[league];
                     
                     // Filter the matches based on the value of the 'predi' variable
-                    console.log(matches)
+                    // console.log(matches)
                     const filteredMatches = matches.filter(match => {
                       const predi = match['predi'];
                       const homeMax = match['home_max'];
@@ -307,7 +378,7 @@ export class DashboardComponent implements OnInit{
                         maxOdds = awayMax;
                       }
                       
-                      return this.user.strategy.includes(predi) && 
+                      return this.value.includes(predi) && 
                               maxOdds >= this.user.rangeCotes[0] && 
                               maxOdds <= this.user.rangeCotes[1]
                     });

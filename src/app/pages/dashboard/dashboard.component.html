@@ -45,6 +45,27 @@
       <button nbButton (click)="open(dialog)" status="primary">Filtrer les championnats</button>
     </div>
     //-->
+    <div class="form-group row">
+      <label class="col-sm-3 label">Filter sur le type</label>
+      <div class="col-sm-9">
+        <p-selectButton [options]="strategy" [(ngModel)]="value" [multiple]="true" optionLabel="name" optionValue="value" (onChange)="onChangeStrategy($event)"></p-selectButton>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 label">Championnats</label>
+      <div class="col-sm-9">
+        <nb-select multiple placeholder="Choix des leagues à afficher" (selectedChange)="onSelected($event)" [selected] = "id_leagues" [(ngModel)]="id_leagues" style ="min-width: 100%;">
+          <nb-option *ngFor="let league of all_leagues" [value]="league" >{{league}}</nb-option>
+        </nb-select>
+      </div>
+    </div>
+    <div *ngIf="rangeValues !== undefined" class="form-group row">
+      <label class="col-sm-3 label">Cotes</label>
+      <div class="col-sm-9">
+        <h5>Range: {{rangeValues[0] + ' - ' + rangeValues[1]}}</h5>
+        <p-slider [(ngModel)]="rangeValues" [range]="true" [step] = "0.1"></p-slider>
+      </div>
+    </div>
 </nb-card-body>
 
 

@@ -14,9 +14,11 @@ export class Match {
     HScore: number;
     AScore: number;
     FTR: number;
+    date_maj: string;
     
     constructor(Id_match: string,Date_match: string, homeTeam: string,Id_homeTeam:string,  awayTeam: string, Id_awayTeam:string,
-       Id_league: string, predi: number, home_max: number, away_max: number, draw_max: number, link: string, HScore: number, AScore: number, FTR: number) {
+       Id_league: string, predi: number, home_max: number, away_max: number, draw_max: number, link: string, HScore: number,
+        AScore: number, FTR: number, date_maj: string) {
       this.Id_match = Id_match;
       this.Date_match = Date_match;
       this.homeTeam = homeTeam;
@@ -32,5 +34,7 @@ export class Match {
       this.HScore = HScore;
       this.AScore = AScore;
       this.FTR = FTR;
+      this.date_maj = date_maj;
+
     }
   }
