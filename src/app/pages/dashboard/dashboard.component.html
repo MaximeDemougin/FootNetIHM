@@ -54,7 +54,7 @@
     <div class="form-group row">
       <label class="col-sm-3 label">Championnats</label>
       <div class="col-sm-9">
-        <nb-select multiple placeholder="Choix des leagues à afficher" (selectedChange)="onSelected($event)" [selected] = "id_leagues" [(ngModel)]="id_leagues" style ="min-width: 100%;">
+        <nb-select multiple placeholder="Choix des leagues à afficher" (selectedChange)="onSelected($event)" [(ngModel)]="id_leagues" style ="min-width: 100%;">
           <nb-option *ngFor="let league of all_leagues" [value]="league" >{{league}}</nb-option>
         </nb-select>
       </div>

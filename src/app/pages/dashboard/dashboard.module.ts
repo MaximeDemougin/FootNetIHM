@@ -12,6 +12,7 @@ import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { SliderModule } from 'primeng/slider';
 import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule as ngFormsModule } from '@angular/forms';
 @NgModule({
   imports: [
     NbCardModule,
@@ -31,6 +32,8 @@ import { InputTextModule } from 'primeng/inputtext';
     SliderModule,
     InputTextModule,
     NbSelectModule,
+    ngFormsModule,
+    
   ],
   declarations: [
     DashboardComponent, AccordionMatchsComponent

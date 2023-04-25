@@ -1,4 +1,4 @@
-import { Component, ViewChild, ChangeDetectorRef,TemplateRef, OnInit   } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef,TemplateRef, OnInit,AfterViewInit    } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NbTabComponent, NbTabsetComponent, NbTagComponent, } from '@nebular/theme';
 import { DatePipe } from '@angular/common';
@@ -8,6 +8,11 @@ import { NbDialogService } from '@nebular/theme';
 import { endpointService } from '../pages.service';
 import { userService } from '../users.service';
 import { NbAuthService, NbAuthJWTToken } from '@nebular/auth';
+import { C } from '@angular/cdk/keycodes';
+import { of } from 'rxjs';
+import { NbSelectComponent } from '@nebular/theme';
+import { Console } from 'console';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 interface Match {
   Id_match: string;
   Id_league: string;
@@ -28,7 +33,7 @@ interface Match {
   styleUrls: ['./dashboard.component.scss'],
   providers: [DatePipe]
 })
-export class DashboardComponent implements OnInit{
+export class DashboardComponent implements AfterViewInit {
   @ViewChild('item', { static: true }) accordion;
   defaultDate: Date;
   clickedAccordion: any;
@@ -76,11 +81,11 @@ export class DashboardComponent implements OnInit{
     ];
   rangeValues: number[] = [1, 10];
   constructor(private dialogService: NbDialogService,private authService: NbAuthService, private http: HttpClient, private cdr: ChangeDetectorRef,private datePipe: DatePipe,
-    private dateService: NbDateService<Date>,private accordionDataService: AccordionDataService, public UserService: userService,public EndpointService: endpointService) {
+    private dateService: NbDateService<Date>,private accordionDataService: AccordionDataService, public UserService: userService,public EndpointService: endpointService, 
+    ) {
     this.defaultDate = new Date();
     this.accordionDataService.currentAccordionData.subscribe(data => {
       this.accordionData = data;
-      console.log(this.accordionData.Id_match);
       if (typeof this.accordionData.Id_match !== "undefined") {
 
         // if (this.selectedTabMatchs == 'Composition') {
@@ -135,7 +140,7 @@ export class DashboardComponent implements OnInit{
   }
 
   myMatchs: Match[] = [];
-  id_leagues: string[] = [];
+ 
   removed_leagues: string[] = [];
   data: any;
   matchesByLeague: any;
@@ -179,11 +184,20 @@ export class DashboardComponent implements OnInit{
 
   selectedItems: any[] = [];
   onSelected(selectedItems: any[]) {
+    console.log(this.select.selectionModel);
+    console.log(this.select.customLabel);
+    console.log(this.select.options.toArray());
     this.selectedItems = this.all_leagues.filter(league => !selectedItems.includes(league));
-    console.log(this.selectedItems);
+    console.log("ici on selectionne : ",this.selectedItems,this.id_leagues);
+    
   }
   all_matches: any;
-  ngOnInit() {
+  id_leagues: string[] = [];
+  @ViewChild(NbSelectComponent) select: NbSelectComponent;
+
+  async ngAfterViewInit() {
+    this.onDateChange(this.defaultDate);
+    console.log(this.select.selectionModel)
     // check if the user is authenticated
     this.authService.onTokenChange()
     .subscribe((token: NbAuthJWTToken) => {
@@ -192,7 +206,7 @@ export class DashboardComponent implements OnInit{
         // if the token is valid, get the user info and fetch the matches
         this.UserService.getUserInfo().subscribe(user => {
           this.user = user;
-          this.http.get(this.EndpointService.endpoint+'/get_match_day?date='+`${this.year}-${this.month}-${this.day}`, { observe: 'response' }).subscribe((res) => {
+           this.http.get(this.EndpointService.endpoint+'/get_match_day?date='+`${this.year}-${this.month}-${this.day}`, { observe: 'response' }).subscribe((res) => {
             this.data = res.body;
             console.log("Je viens là");
             this.all_matches = this.data
@@ -203,6 +217,8 @@ export class DashboardComponent implements OnInit{
             this.all_leagues = this.id_leagues;
             this.id_leagues = this.id_leagues.filter(league => !this.user.id_leagues.includes(league));
             this.id_leagues.sort();
+            console.log("ici on filtre : ",this.id_leagues);
+            
             // console.log(this.id_leagues)
             // create an object to store matches for each league
             const matchesByLeague: { [id: string]: Match[] } = {};
@@ -251,13 +267,17 @@ export class DashboardComponent implements OnInit{
 
             this.matchesByLeague = matchesByLeague;
           });
-          this.cdr.detectChanges(); // Trigger change detection
         });
     } else {
         // if the token is valid, get the user info and fetch the matches
           this.http.get(this.EndpointService.endpoint+'/get_match_day?date='+`${this.year}-${this.month}-${this.day}`, { observe: 'response' }).subscribe((res) => {
             this.data = res.body;
+            console.log("Je suis là ngoninit pas connected");
+            this.all_matches = this.data
             this.id_leagues = Object.keys(this.data);
+            this.id_leagues.sort();
+            this.all_leagues = this.id_leagues;
+            this.value = [2,1,0]
             // create an object to store matches for each league
             const matchesByLeague: { [id: string]: Match[] } = {};
     
@@ -268,6 +288,7 @@ export class DashboardComponent implements OnInit{
             
             // assign the matches to the component property
             this.matchesByLeague = matchesByLeague;
+            console.log("id leagues : ",this.id_leagues,this.all_leagues)
           });
     }
   });
@@ -340,6 +361,7 @@ export class DashboardComponent implements OnInit{
             this.id_leagues = this.id_leagues.filter(league => !this.user.id_leagues.includes(league));
             this.id_leagues.sort();
             console.log(this.id_leagues)
+            
             // create an object to store matches for each league
             const matchesByLeague: { [id: string]: Match[] } = {};
     
@@ -398,6 +420,8 @@ export class DashboardComponent implements OnInit{
       this.http.get(this.EndpointService.endpoint+'/get_match_day?date='+formattedDate, { observe: 'response' }).subscribe((res) => {
         this.data = res.body;
         this.id_leagues = Object.keys(this.data);
+        this.all_leagues = this.id_leagues;
+        console.log(this.id_leagues, this.all_leagues)
   
         // create an object to store matches for each league
         const matchesByLeague: { [id: string]: Match[] } = {};
