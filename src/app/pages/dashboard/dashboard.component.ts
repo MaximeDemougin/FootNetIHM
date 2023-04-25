@@ -184,20 +184,12 @@ export class DashboardComponent implements AfterViewInit {
 
   selectedItems: any[] = [];
   onSelected(selectedItems: any[]) {
-    console.log(this.select.selectionModel);
-    console.log(this.select.customLabel);
-    console.log(this.select.options.toArray());
     this.selectedItems = this.all_leagues.filter(league => !selectedItems.includes(league));
-    console.log("ici on selectionne : ",this.selectedItems,this.id_leagues);
-    
   }
   all_matches: any;
   id_leagues: string[] = [];
-  @ViewChild(NbSelectComponent) select: NbSelectComponent;
 
   async ngAfterViewInit() {
-    this.onDateChange(this.defaultDate);
-    console.log(this.select.selectionModel)
     // check if the user is authenticated
     this.authService.onTokenChange()
     .subscribe((token: NbAuthJWTToken) => {
@@ -208,6 +200,7 @@ export class DashboardComponent implements AfterViewInit {
           this.user = user;
            this.http.get(this.EndpointService.endpoint+'/get_match_day?date='+`${this.year}-${this.month}-${this.day}`, { observe: 'response' }).subscribe((res) => {
             this.data = res.body;
+            this.onDateChange(this.defaultDate);
             console.log("Je viens là");
             this.all_matches = this.data
             this.value = this.user.strategy
@@ -272,6 +265,7 @@ export class DashboardComponent implements AfterViewInit {
         // if the token is valid, get the user info and fetch the matches
           this.http.get(this.EndpointService.endpoint+'/get_match_day?date='+`${this.year}-${this.month}-${this.day}`, { observe: 'response' }).subscribe((res) => {
             this.data = res.body;
+            this.onDateChange(this.defaultDate);
             console.log("Je suis là ngoninit pas connected");
             this.all_matches = this.data
             this.id_leagues = Object.keys(this.data);
@@ -296,7 +290,7 @@ export class DashboardComponent implements AfterViewInit {
   
   onChangeStrategy(event) {
     this.value = event.value;
-    console.log("Je viens changer de strategy : ",this.value)
+    console.log("Je viens changer de strategy : ",this.value,this.rangeValues)
     console.log(this.all_matches)
     const matchesByLeague = { ...this.all_matches };
 
@@ -323,15 +317,15 @@ export class DashboardComponent implements AfterViewInit {
           }
           
           return this.value.includes(predi) && 
-                  maxOdds >= this.user.rangeCotes[0] && 
-                  maxOdds <= this.user.rangeCotes[1]
+                  maxOdds >= this.rangeValues[0] && 
+                  maxOdds <= this.rangeValues[1]
         });
         
         // Update the league property of the JSON object with the filtered matches
         matchesByLeague[league] = filteredMatches;
       }
     }
-    console.log("J'ai fini ",this.all_matches)
+    console.log("J'ai fini ",matchesByLeague)
 
     this.matchesByLeague = matchesByLeague;
   }
@@ -369,16 +363,7 @@ export class DashboardComponent implements AfterViewInit {
             this.id_leagues.forEach((id) => {
               matchesByLeague[id] = this.data[id];
             });
-            
-            // Assuming your JSON object is stored in a variable called 'data'
             for (const league in matchesByLeague) {
-              if (matchesByLeague.hasOwnProperty(league)) {
-                // Get the array of matches for the current league
-                const matches = matchesByLeague[league];
-                
-                // Filter the matches based on the value of the 'predi' variable
-                // console.log(matches)
-                for (const league in matchesByLeague) {
                   if (matchesByLeague.hasOwnProperty(league)) {
                     // Get the array of matches for the current league
                     const matches = matchesByLeague[league];
@@ -401,17 +386,14 @@ export class DashboardComponent implements AfterViewInit {
                       }
                       
                       return this.value.includes(predi) && 
-                              maxOdds >= this.user.rangeCotes[0] && 
-                              maxOdds <= this.user.rangeCotes[1]
+                              maxOdds >= this.rangeValues[0] && 
+                              maxOdds <= this.rangeValues[1]
                     });
                     
                     // Update the league property of the JSON object with the filtered matches
                     matchesByLeague[league] = filteredMatches;
                   }
                 }
-                
-              }
-            }
             // assign the matches to the component property
             this.matchesByLeague = matchesByLeague;
           });
@@ -419,6 +401,7 @@ export class DashboardComponent implements AfterViewInit {
     } else {
       this.http.get(this.EndpointService.endpoint+'/get_match_day?date='+formattedDate, { observe: 'response' }).subscribe((res) => {
         this.data = res.body;
+        this.all_matches = this.data
         this.id_leagues = Object.keys(this.data);
         this.all_leagues = this.id_leagues;
         console.log(this.id_leagues, this.all_leagues)
@@ -430,13 +413,86 @@ export class DashboardComponent implements AfterViewInit {
         this.id_leagues.forEach((id) => {
           matchesByLeague[id] = this.data[id];
         });
-  
-        // assign the matches to the component property
+        
+        for (const league in matchesByLeague) {
+          if (matchesByLeague.hasOwnProperty(league)) {
+            // Get the array of matches for the current league
+            const matches = matchesByLeague[league];
+            
+            // Filter the matches based on the value of the 'predi' variable
+            // console.log(matches)
+            const filteredMatches = matches.filter(match => {
+              const predi = match['predi'];
+              const homeMax = match['home_max'];
+              const drawMax = match['draw_max'];
+              const awayMax = match['away_max'];
+              
+              let maxOdds = 0;
+              if (predi === 2) {
+                maxOdds = homeMax;
+              } else if (predi === 1) {
+                maxOdds = drawMax;
+              } else if (predi === 0) {
+                maxOdds = awayMax;
+              }
+              
+              return this.value.includes(predi) && 
+                      maxOdds >= this.rangeValues[0] && 
+                      maxOdds <= this.rangeValues[1]
+            });
+            
+            // Update the league property of the JSON object with the filtered matches
+            matchesByLeague[league] = filteredMatches;
+          }
+        }
         this.matchesByLeague = matchesByLeague;
       });
     }
   });
   }
+  onChangeCotes(event) {
+    console.log("Je viens changer de cotes : ",event)
+    this.rangeValues = event.values;
+    console.log("Je viens changer de strategy : ",this.rangeValues)
+    const matchesByLeague = { ...this.all_matches };
+
+    for (const league in matchesByLeague) {
+      if (matchesByLeague.hasOwnProperty(league)) {
+        // Get the array of matches for the current league
+        const matches = matchesByLeague[league];
+        
+        // Filter the matches based on the value of the 'predi' variable
+        // console.log(matches)
+        const filteredMatches = matches.filter(match => {
+          const predi = match['predi'];
+          const homeMax = match['home_max'];
+          const drawMax = match['draw_max'];
+          const awayMax = match['away_max'];
+          
+          let maxOdds = 0;
+          if (predi === 2) {
+            maxOdds = homeMax;
+          } else if (predi === 1) {
+            maxOdds = drawMax;
+          } else if (predi === 0) {
+            maxOdds = awayMax;
+          }
+          
+          return this.value.includes(predi) && 
+                  maxOdds >= this.rangeValues[0] && 
+                  maxOdds <= this.rangeValues[1]
+        });
+        
+        // Update the league property of the JSON object with the filtered matches
+        matchesByLeague[league] = filteredMatches;
+      }
+    }
+    console.log("J'ai fini ",this.all_matches)
+
+    this.matchesByLeague = matchesByLeague;
+  }
+
+
 
   open(dialog: TemplateRef<any>) {
     this.dialogService.open(dialog, { context: 'this is some additional data passed to dialog' });

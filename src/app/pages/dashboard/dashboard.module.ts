@@ -13,6 +13,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { SliderModule } from 'primeng/slider';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule as ngFormsModule } from '@angular/forms';
+import { ToolbarModule } from 'primeng/toolbar';
 @NgModule({
   imports: [
     NbCardModule,
@@ -33,6 +34,7 @@ import { FormsModule as ngFormsModule } from '@angular/forms';
     InputTextModule,
     NbSelectModule,
     ngFormsModule,
+    ToolbarModule,
     
   ],
   declarations: [

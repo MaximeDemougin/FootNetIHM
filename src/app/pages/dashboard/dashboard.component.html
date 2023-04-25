@@ -45,31 +45,29 @@
       <button nbButton (click)="open(dialog)" status="primary">Filtrer les championnats</button>
     </div>
     //-->
-    <div class="form-group row">
-      <label class="col-sm-3 label">Filter sur le type</label>
-      <div class="col-sm-9">
+</nb-card-body>
+</nb-card>
+<nb-card>
+  <nb-card-header>
+    <h1 style="text-align: center;" >Paramètres</h1>
+  </nb-card-header>
+  <nb-card-body class="parametres">
+    <div class="form-group row" class="col-sm-4" style="justify-content: center; max-width: 75%; display: flex; padding: 10px;">
+     <!-- <label class="col-sm-3 label">Filter sur le type</label>-->
         <p-selectButton [options]="strategy" [(ngModel)]="value" [multiple]="true" optionLabel="name" optionValue="value" (onChange)="onChangeStrategy($event)"></p-selectButton>
-      </div>
     </div>
-    <div class="form-group row">
-      <label class="col-sm-3 label">Championnats</label>
-      <div class="col-sm-9">
-        <nb-select multiple placeholder="Choix des leagues à afficher" (selectedChange)="onSelected($event)" [(ngModel)]="id_leagues" style ="min-width: 100%;">
+    <div class="form-group row" class="col-sm-4" style="justify-content: center; max-width: 75%;  padding: 10px;   display: flex;">
+      <!--<label class="col-sm-3 label">Championnats</label>-->
+        <nb-select multiple placeholder="Choix des leagues à afficher" (selectedChange)="onSelected($event)" [(ngModel)]="id_leagues" style ="min-width: 75%;">
           <nb-option *ngFor="let league of all_leagues" [value]="league" >{{league}}</nb-option>
         </nb-select>
-      </div>
     </div>
-    <div *ngIf="rangeValues !== undefined" class="form-group row">
-      <label class="col-sm-3 label">Cotes</label>
-      <div class="col-sm-9">
-        <h5>Range: {{rangeValues[0] + ' - ' + rangeValues[1]}}</h5>
-        <p-slider [(ngModel)]="rangeValues" [range]="true" [step] = "0.1"></p-slider>
-      </div>
+    <div *ngIf="rangeValues !== undefined" class="col-sm-4" style="justify-content: center; padding: 10px;">
+      <!--<label class="col-sm-3 label">Cotes</label>-->
+        <h5>Cotes: {{rangeValues[0] + ' - ' + rangeValues[1]}}</h5>
+        <p-slider [(ngModel)]="rangeValues" [range]="true" [step] = "0.1" (onChange)="onChangeCotes($event)"></p-slider>
     </div>
 </nb-card-body>
-
-
-
 </nb-card>
 <div class="row">
   <div class="col-md-12 col-lg-6 col-xxxl-6">
