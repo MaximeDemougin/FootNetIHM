@@ -79,7 +79,7 @@ export class DashboardComponent implements AfterViewInit {
         { name: 'Draw', value: 1 },
         { name: 'Away', value: 0 }
     ];
-  rangeValues: number[] = [1, 10];
+  rangeValues: number[] = [1, 7];
   constructor(private dialogService: NbDialogService,private authService: NbAuthService, private http: HttpClient, private cdr: ChangeDetectorRef,private datePipe: DatePipe,
     private dateService: NbDateService<Date>,private accordionDataService: AccordionDataService, public UserService: userService,public EndpointService: endpointService, 
     ) {

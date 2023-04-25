@@ -65,7 +65,7 @@
     <div *ngIf="rangeValues !== undefined" class="col-sm-4" style="justify-content: center; padding: 10px;">
       <!--<label class="col-sm-3 label">Cotes</label>-->
         <h5>Cotes: {{rangeValues[0] + ' - ' + rangeValues[1]}}</h5>
-        <p-slider [(ngModel)]="rangeValues" [range]="true" [step] = "0.1" (onChange)="onChangeCotes($event)"></p-slider>
+        <p-slider [(ngModel)]="rangeValues" [range]="true" [step] = "0.1" [max] = 10 [min] = 1 (onChange)="onChangeCotes($event)"></p-slider>
     </div>
 </nb-card-body>
 </nb-card>
