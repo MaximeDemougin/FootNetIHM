@@ -11,6 +11,8 @@ import { TimelineComponent } from './timeline/timeline.component';
 import { ButtonModule } from 'primeng/button';
 import{TableModule} from 'primeng/table';
 import * as echarts from 'echarts';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -23,6 +25,8 @@ import * as echarts from 'echarts';
     NbIconModule,
     ButtonModule,
     TableModule,
+    RadioButtonModule,
+    FormsModule,
     NgxEchartsModule.forRoot({
       /**
        * This will import all modules from echarts.

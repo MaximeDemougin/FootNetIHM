@@ -7,4 +7,53 @@
     
   </nb-card>
 </div>
-<ngx-table></ngx-table>
+
+
+<div class="flex flex-wrap justify-content-center gap-3" style="display: flex;">
+  <div class="flex align-items-center">
+      <p-radioButton name="tableau" value="League" [(ngModel)]="tableau" inputId="tableau1" (click)="onRadioButtonClick('League')"></p-radioButton>
+      <label for="tableau1" class="ml-2">League</label>
+  </div>
+
+  <div class="flex align-items-center">
+    <p-radioButton name="tableau" value="Season" [(ngModel)]="tableau" inputId="tableau2" (click)="onRadioButtonClick('Season')"></p-radioButton>
+    <label for="tableau2" class="ml-2">Season</label>
+  </div>
+
+  <div class="flex align-items-center">
+    <p-radioButton name="tableau" value="OddsClass " [(ngModel)]="tableau" inputId="tableau3" (click)="onRadioButtonClick('OddsClass')"></p-radioButton>
+    <label for="tableau3" class="ml-2">Odds Class </label>
+  </div>
+
+  <div class="flex align-items-center">
+    <p-radioButton name="tableau" value="Day" [(ngModel)]="tableau" inputId="tableau4" (click)="onRadioButtonClick('Day')"></p-radioButton>
+    <label for="tableau4" class="ml-2">Day</label>
+  </div>
+
+  <div class="flex align-items-center">
+    <p-radioButton name="tableau" value="ListMatches" [(ngModel)]="tableau" inputId="tableau5" (click)="onRadioButtonClick('ListMatches')"></p-radioButton>
+    <label for="tableau5" class="ml-2">List Matches</label>
+  </div>
+
+  <div class="flex align-items-center">
+    <p-radioButton name="tableau" value="TypeMatches" [(ngModel)]="tableau" inputId="tableau6" (click)="onRadioButtonClick('TypeMatches')"></p-radioButton>
+    <label for="tableau6" class="ml-2">Type Matches</label>
+  </div>
+</div>
+
+<p-table  *ngIf="statistics !== undefined" [columns]="cols" [value]="statistics" [tableStyle]="{ 'min-width': '50rem' }">
+  <ng-template pTemplate="header" let-columns>
+      <tr>
+          <th *ngFor="let col of columns">
+              {{ col.header }}
+          </th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td *ngFor="let col of columns">
+          {{ rowData[col.field] || statistics[rowData.id][col.field] }}
+        </td>
+      </tr>
+  </ng-template>
+</p-table>
