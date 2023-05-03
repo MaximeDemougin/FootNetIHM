@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { NbThemeService } from '@nebular/theme';
 import { statsService } from '../stats.service';
+import { ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
 @Component({
   selector: 'ngx-timeline',
   //templateUrl: './timeline.component.html',
@@ -12,14 +13,22 @@ import { statsService } from '../stats.service';
   styleUrls: ['./timeline.component.scss']
 })
 export class TimelineComponent  {
-  constructor(private http: HttpClient,private theme: NbThemeService, private api:statsService) {}
+  constructor(private http: HttpClient,private theme: NbThemeService, private api:statsService,private cdr: ChangeDetectorRef) {}
   themeSubscription: any;
-
+  @Input() settings: any;
   // options: any = {};
   data:any;
   mergeOption: any;
   loading = false;
-
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.settings) {
+      this.getData();
+    }
+  }
+  private updateView() {
+    console.log("change",this.settings)
+    // Logic to update the component's view based on the new value of the settings property
+  }
   options = {
     // backgroundColor: echarts.bg,
     // color : [colors.info],
@@ -81,15 +90,19 @@ export class TimelineComponent  {
         name: 'Gain net',
         data: [],
         type: 'line',
-        smooth: true
+        lineStyle: {
+          smooth: 0.8 // use a tension of 0.5 for the spline
+        }
       }
     ]
   };
 
   getData() {
+    this.cdr.detectChanges();
+    console.log("timeline : ",this.settings);
     this.loading = true;
     this.api
-  .getData()
+  .getData(this.settings)
   .then((result) => {
     console.log(result);
     const data = result.data;

@@ -1,0 +1,58 @@
+.parametres {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  @media (max-width: 768px) {
+    .parametres {
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  /* style for the entire list */
+nb-list {
+  list-style: none;
+  padding: 0;
+}
+
+/* style for each list item */
+nb-list-item {
+  margin-bottom: 10px;
+}
+
+/* style for the numbers in each list item */
+nb-list-item span {
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+/* style for negative numbers */
+.negative {
+  color: rgb(107, 35, 35);
+}
+
+/* style for positive numbers */
+.positive {
+  color: rgb(38, 211, 171);
+}
+
+.tableHead {
+  background-color: var(--layout-background-color)!important;
+  color: var(--table-text-color)!important;
+  line-height: var(--smart-table-header-line-height)!important;
+  border: 1px solid var(--smart-table-separator)!important;
+}
+
+.tableBody {
+  color: var(--smart-table-fg)!important;
+}
+
+tr:nth-child(even) {
+  background-color: var(--layout-background-color)!important;
+}
+
+tr:nth-child(odd) {
+  background-color: var(--card-background-color)!important;
+}

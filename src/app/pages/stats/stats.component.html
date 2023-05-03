@@ -1,10 +1,156 @@
-<div class="col-lg-6">
+<nb-card>
+  <nb-card-header>
+    <h1 style="text-align: center;" >Paramètres</h1>
+  </nb-card-header>
+  <nb-card-body class="parametres">
+    <div class="form-group row" class="col-sm-4" style="justify-content: center; max-width: 75%; display: flex; padding: 10px;">
+     <!-- <label class="col-sm-3 label">Filter sur le type</label>-->
+        <p-selectButton [options]="strategy" [(ngModel)]="value" [multiple]="true" optionLabel="name" optionValue="value" (onChange)="onChangeStrategy($event)"></p-selectButton>
+    </div>
+    <div class="form-group row" class="col-sm-4" style="justify-content: center; max-width: 75%;  padding: 10px;   display: flex;">
+      <!--<label class="col-sm-3 label">Championnats</label>-->
+        <nb-select multiple placeholder="Choix des leagues à afficher" (selectedChange)="onSelected($event)" [(ngModel)]="id_leagues" style ="min-width: 75%;">
+          <nb-option *ngFor="let league of all_leagues" [value]="league" >{{league}}</nb-option>
+        </nb-select>
+    </div>
+    <div *ngIf="rangeValues !== undefined" class="col-sm-4" style="justify-content: center; padding: 10px;">
+      <!--<label class="col-sm-3 label">Cotes</label>-->
+        <h5>Cotes: {{rangeValues[0] + ' - ' + rangeValues[1]}}</h5>
+        <p-slider [(ngModel)]="rangeValues" [range]="true" [step] = "0.1" [max] = 10 [min] = 1 (onChange)="onRangeChange($event)"></p-slider>
+    </div>
+</nb-card-body>
+</nb-card>
+
+<div class="container-fluid" style="padding: 0;">
+  <div class="row d-flex flex-wrap" style="padding: 1rem;">
+    <ngx-boxs titre = "Number of matches" icon ="fa fa-futbol" [stat] = "stats.Played"></ngx-boxs>
+    <ngx-boxs titre = "Gain net" icon ="fa fa-money-bill" [stat] = "stats.Units"></ngx-boxs>
+    <ngx-boxs titre = "ROI (en %)" icon ="fa fa-chart-line" [stat] = "stats.ROI"></ngx-boxs>
+    <ngx-boxs titre = "Win rate" icon ="fa fa-percentage" [stat] = "stats.WinRate"></ngx-boxs>
+  </div>
+</div>
+
+
+
+<div class="row">
+<div class="col-lg-8">
   <nb-card>
     <nb-card-header>Courbe des résultats</nb-card-header>
     <nb-card-body>
-      <ngx-timeline></ngx-timeline>
+      <ngx-timeline [settings] ="this.settings"></ngx-timeline>
     </nb-card-body>
     
   </nb-card>
 </div>
-<ngx-table></ngx-table>
+<div class="col-lg-4">
+  <nb-card >
+    <nb-card-header>Les derniers matchs</nb-card-header>
+    <nb-card-body>
+      <nb-list class="my-list">
+        <nb-list-item>
+          <strong>Milan vs Inter (3-1)</strong>  <span class="positive">+2.5</span>
+        </nb-list-item>
+        <nb-list-item>
+          <strong>Juventus vs Roma (1-0)</strong> <span class="negative">-1</span>
+        </nb-list-item>
+        <nb-list-item>
+          <strong>Lazio vs Napoli (2-2)</strong> <span class="negative">-1</span>
+        </nb-list-item>
+        <nb-list-item>
+          <strong>Atalanta vs Torino (2-1)</strong> <span class="positive">+3.8</span>
+        </nb-list-item>
+        <nb-list-item>
+         <strong>PSG vs Angers (3-1) </strong> <span class="positive">+0.2</span>
+        </nb-list-item>
+        <nb-list-item>
+          <strong>Lyon vs Marseille (2-3)</strong> <span class="positive">+1.5</span>
+        </nb-list-item>
+      </nb-list>
+      
+    </nb-card-body>
+  </nb-card>
+</div>
+</div>
+
+<nb-card>
+  <nb-card-header>
+    <h1 style="text-align: center;" >Statistiques</h1>
+  </nb-card-header>
+  <nb-card-body>
+    <div class="flex flex-wrap justify-content-center gap-3" style="display: flex;">
+      <div class="flex align-items-center" style="margin-right: 10px;">
+          <p-radioButton name="tableau" value="League" [(ngModel)]="tableau" inputId="tableau1" (click)="onRadioButtonClick('League')"></p-radioButton>
+          <label for="tableau1" class="ml-2" style="margin-bottom: 0%!important;">League</label>
+      </div>
+    
+      <div class="flex align-items-center" style="margin-right: 10px;">
+        <p-radioButton name="tableau" value="Season" [(ngModel)]="tableau" inputId="tableau2" (click)="onRadioButtonClick('Season')"></p-radioButton>
+        <label for="tableau2" class="ml-2" style="margin-bottom: 0%!important;">Season</label>
+      </div>
+    
+      <div class="flex align-items-center" style="margin-right: 10px;">
+        <p-radioButton name="tableau" value="OddsClass " [(ngModel)]="tableau" inputId="tableau3" (click)="onRadioButtonClick('OddsClass')"></p-radioButton>
+        <label for="tableau3" class="ml-2" style="margin-bottom: 0%!important;">Odds Class </label>
+      </div>
+    
+      <div class="flex align-items-center" style="margin-right: 10px;">
+        <p-radioButton name="tableau" value="Day" [(ngModel)]="tableau" inputId="tableau4" (click)="onRadioButtonClick('Day')"></p-radioButton>
+        <label for="tableau4" class="ml-2" style="margin-bottom: 0%!important;">Day</label>
+      </div>
+    
+      <div class="flex align-items-center" style="margin-right: 10px;">
+        <p-radioButton name="tableau" value="ListMatches" [(ngModel)]="tableau" inputId="tableau5" (click)="onRadioButtonClick('ListMatches')"></p-radioButton>
+        <label for="tableau5" class="ml-2" style="margin-bottom: 0%!important;">List Matches</label>
+      </div>
+    
+      <div class="flex align-items-center" style="margin-right: 10px;">
+        <p-radioButton name="tableau" value="TypeMatches" [(ngModel)]="tableau" inputId="tableau6" (click)="onRadioButtonClick('TypeMatches')"></p-radioButton>
+        <label for="tableau6" class="ml-2" style="margin-bottom: 0%!important;">Type Matches</label>
+      </div>
+    </div>
+
+    <hr>
+    
+    <p-table *ngIf="statisticsLoaded" [columns]="cols" [value]="statistics" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10, 25, 50]">
+      <ng-template *ngIf="statisticsLoaded" pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" class="tableHead" style="text-align: center;">
+            {{ col.header }}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template *ngIf="statisticsLoaded" pTemplate="body" let-rowData let-columns="columns">
+        <tr [class]="{'even-row': even, 'odd-row': odd}">
+          <td *ngFor="let col of columns" class="tableBody" style="text-align: center;">
+            {{ rowData[col.field] || statistics[rowData.id][col.field] }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <!-- <p-table  *ngIf="statistics !== undefined" 
+              [columns]="cols" 
+              [value]="statistics" 
+              [paginator]="true" 
+              [rows]="5" 
+              [showCurrentPageReport]="true" 
+              [tableStyle]="{ 'min-width': '50rem' }" 
+              currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+              [rowsPerPageOptions]="[10, 25, 50]">
+      <ng-template *ngIf="statistics.Win_rate !== undefined"  pTemplate="header" let-columns>
+          <tr *ngIf="statistics.Win_rate !== undefined" >
+              <th *ngFor="let col of columns"  class="tableHead" style="text-align: center;">
+                  {{ col.header }}
+              </th>
+          </tr>
+      </ng-template>
+       <ng-template *ngIf="statistics.Win_rate !== undefined"  pTemplate="body" let-rowData let-columns="columns">
+        <tr *ngIf="statistics.Win_rate !== undefined"  [class]="{'even-row': even, 'odd-row': odd}">
+            <td  *ngFor="let col of columns" class="tableBody" style="text-align: center;">
+              {{ rowData[col.field] || statistics[rowData.id][col.field] }}
+            </td>
+          </tr>
+      </ng-template>
+    </p-table> -->
+  </nb-card-body>
+</nb-card>
+
