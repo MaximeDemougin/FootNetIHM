@@ -142,65 +142,65 @@ export class StatsComponent {
     const res: any = await this.http.post(`${this.EndpointService.endpoint}/Get_Table`, this.settings_table).toPromise();
     if (choix === 'League') {
       this.cols=[
-        { field: "Name_League", header: "League" },
-        { field: "Matches_Betted", header: "Matches Betted" },
-        { field: "Win_Rate", header: "Winrate" },
-        { field: "Units", header: "Units" },
+        { field: "Name_League", header: "Championnats" },
+        { field: "Matches_Betted", header: "Nombre" },
+        { field: "Win_Rate", header: "Win rate" },
+        { field: "Units", header: "Net" },
         { field: "ROI", header: "ROI" },
-        { field: "Mean_Odds", header: "Mean Odds" }
+        { field: "Mean_Odds", header: "Cote moyenne" }
       ];
     }
     if (choix === 'Season') {
       this.cols=[
-        { field: "Saison", header: "Season" },
-        { field: "Matches_Betted", header: "Matches Betted" },
-        { field: "Win_Rate", header: "Winrate" },
-        { field: "Units", header: "Units" },
+        { field: "Saison", header: "Saisons" },
+        { field: "Matches_Betted", header: "Nombre" },
+        { field: "Win_Rate", header: "Win rate" },
+        { field: "Units", header: "Net" },
         { field: "ROI", header: "ROI" },
-        { field: "Mean_Odds", header: "Mean Odds" }
+        { field: "Mean_Odds", header: "Cote moyenne" }
       ];
     }
     if (choix === 'OddsClass') {
       this.cols=[
-        { field: "Odds_Class", header: "Odds Class" },
-        { field: "Matches_Betted", header: "Matches Betted" },
-        { field: "Win_Rate", header: "Winrate" },
-        { field: "Units", header: "Units" },
+        { field: "Odds_Class", header: "Cotes" },
+        { field: "Matches_Betted", header: "Nombre" },
+        { field: "Win_Rate", header: "Win rate" },
+        { field: "Units", header: "Net" },
         { field: "ROI", header: "ROI" },
-        { field: "Mean_Odds", header: "Mean Odds" }
+        { field: "Mean_Odds", header: "Cote moyenne" }
       ];
     }
     if (choix === 'Day') {
       this.cols=[
-        { field: "Day", header: "Day" },
-        { field: "Matches_Betted", header: "Matches Betted" },
-        { field: "Win_Rate", header: "Winrate" },
-        { field: "Units", header: "Units" },
+        { field: "Day", header: "Jours" },
+        { field: "Matches_Betted", header: "Nombre" },
+        { field: "Win_Rate", header: "Win rate" },
+        { field: "Units", header: "Net" },
         { field: "ROI", header: "ROI" },
-        { field: "Mean_Odds", header: "Mean Odds" }
+        { field: "Mean_Odds", header: "Cote moyenne" }
       ];
     }
     if (choix === 'ListMatches') {
       this.cols=[
         { field: "Date", header: "Date" },
         { field: "ID_MATCH", header: "ID_MATCH" },
-        { field: "HomeTeam", header: "Home Team" },
-        { field: "AwayTeam", header: "Away Team" },
-        { field: "Name_League", header: "League" },
+        { field: "HomeTeam", header: "Domicile" },
+        { field: "AwayTeam", header: "Extérieur" },
+        { field: "Name_League", header: "Championnat" },
         { field: "Prediction", header: "Prediction" },
-        { field: "result", header: "Result" },
-        { field: "units", header: "Units" },
-        { field: "MaxOdds", header: "Odds" }
+        { field: "result", header: "Résultat" },
+        { field: "units", header: "Net" },
+        { field: "MaxOdds", header: "Cote" }
       ];
     }
     if (choix === 'TypeMatches') {
       this.cols=[
-        { field: "TypeMatches", header: "Type Matches" },
-        { field: "Matches_Betted", header: "Matches Betted" },
-        { field: "Win_Rate", header: "Winrate" },
-        { field: "Units", header: "Units" },
+        { field: "TypeMatches", header: "Types" },
+        { field: "Matches_Betted", header: "Nombre" },
+        { field: "Win_Rate", header: "Win rate" },
+        { field: "Units", header: "Net" },
         { field: "ROI", header: "ROI" },
-        { field: "Mean_Odds", header: "Mean Odds" }
+        { field: "Mean_Odds", header: "Cote moyenne" }
       ];
     }
     console.log(res);

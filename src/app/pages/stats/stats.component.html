@@ -23,7 +23,7 @@
 
 <div class="container-fluid" style="padding: 0;">
   <div class="row d-flex flex-wrap" style="padding: 1rem;">
-    <ngx-boxs titre = "Number of matches" icon ="fa fa-futbol" [stat] = "stats.Played"></ngx-boxs>
+    <ngx-boxs titre = "Nombre de matchs" icon ="fa fa-futbol" [stat] = "stats.Played"></ngx-boxs>
     <ngx-boxs titre = "Gain net" icon ="fa fa-money-bill" [stat] = "stats.Units"></ngx-boxs>
     <ngx-boxs titre = "ROI (en %)" icon ="fa fa-chart-line" [stat] = "stats.ROI"></ngx-boxs>
     <ngx-boxs titre = "Win rate" icon ="fa fa-percentage" [stat] = "stats.WinRate"></ngx-boxs>
@@ -80,32 +80,32 @@
     <div class="flex flex-wrap justify-content-center gap-3" style="display: flex;">
       <div class="flex align-items-center" style="margin-right: 10px;">
           <p-radioButton name="tableau" value="League" [(ngModel)]="tableau" inputId="tableau1" (click)="onRadioButtonClick('League')"></p-radioButton>
-          <label for="tableau1" class="ml-2" style="margin-bottom: 0%!important;">League</label>
+          <label for="tableau1" class="ml-2" style="margin-bottom: 0%!important;">Championnats</label>
       </div>
     
       <div class="flex align-items-center" style="margin-right: 10px;">
         <p-radioButton name="tableau" value="Season" [(ngModel)]="tableau" inputId="tableau2" (click)="onRadioButtonClick('Season')"></p-radioButton>
-        <label for="tableau2" class="ml-2" style="margin-bottom: 0%!important;">Season</label>
+        <label for="tableau2" class="ml-2" style="margin-bottom: 0%!important;">Saisons</label>
       </div>
     
       <div class="flex align-items-center" style="margin-right: 10px;">
         <p-radioButton name="tableau" value="OddsClass " [(ngModel)]="tableau" inputId="tableau3" (click)="onRadioButtonClick('OddsClass')"></p-radioButton>
-        <label for="tableau3" class="ml-2" style="margin-bottom: 0%!important;">Odds Class </label>
+        <label for="tableau3" class="ml-2" style="margin-bottom: 0%!important;">Cotes</label>
       </div>
     
       <div class="flex align-items-center" style="margin-right: 10px;">
         <p-radioButton name="tableau" value="Day" [(ngModel)]="tableau" inputId="tableau4" (click)="onRadioButtonClick('Day')"></p-radioButton>
-        <label for="tableau4" class="ml-2" style="margin-bottom: 0%!important;">Day</label>
+        <label for="tableau4" class="ml-2" style="margin-bottom: 0%!important;">Jours</label>
       </div>
     
       <div class="flex align-items-center" style="margin-right: 10px;">
         <p-radioButton name="tableau" value="ListMatches" [(ngModel)]="tableau" inputId="tableau5" (click)="onRadioButtonClick('ListMatches')"></p-radioButton>
-        <label for="tableau5" class="ml-2" style="margin-bottom: 0%!important;">List Matches</label>
+        <label for="tableau5" class="ml-2" style="margin-bottom: 0%!important;">Matches</label>
       </div>
     
       <div class="flex align-items-center" style="margin-right: 10px;">
         <p-radioButton name="tableau" value="TypeMatches" [(ngModel)]="tableau" inputId="tableau6" (click)="onRadioButtonClick('TypeMatches')"></p-radioButton>
-        <label for="tableau6" class="ml-2" style="margin-bottom: 0%!important;">Type Matches</label>
+        <label for="tableau6" class="ml-2" style="margin-bottom: 0%!important;">Types</label>
       </div>
     </div>
 
@@ -114,13 +114,13 @@
     <p-table *ngIf="statisticsLoaded" [columns]="cols" [value]="statistics" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" [tableStyle]="{ 'min-width': '50rem' }" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10, 25, 50]">
       <ng-template *ngIf="statisticsLoaded" pTemplate="header" let-columns>
         <tr>
-          <th *ngFor="let col of columns" class="tableHead" style="text-align: center;">
-            {{ col.header }}
+          <th [pSortableColumn]="col.field" *ngFor="let col of columns" class="tableHead" style="text-align: center;width:20%">
+            {{ col.header }} <p-sortIcon [field]="col.field"></p-sortIcon>
           </th>
         </tr>
       </ng-template>
       <ng-template *ngIf="statisticsLoaded" pTemplate="body" let-rowData let-columns="columns">
-        <tr [class]="{'even-row': even, 'odd-row': odd}">
+        <tr >
           <td *ngFor="let col of columns" class="tableBody" style="text-align: center;">
             {{ rowData[col.field] || statistics[rowData.id][col.field] }}
           </td>

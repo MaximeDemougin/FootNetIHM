@@ -45,7 +45,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   userMenu = [
     { title: 'Profile', icon: 'fa fa-user' },
-    { title: 'Settings', icon: 'fa fa-gear' },
+    // { title: 'Settings', icon: 'fa fa-gear' },
     { title: 'Log out', icon: 'fa fa-sign-out' }];
 
   constructor(private sidebarService: NbSidebarService,

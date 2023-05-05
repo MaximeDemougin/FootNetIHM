@@ -247,10 +247,13 @@ export class DashboardComponent implements AfterViewInit {
                   } else if (predi === 0) {
                     maxOdds = awayMax;
                   }
+                  else if (predi === 3) {
+                    maxOdds = this.rangeValues[0];
+                  }
                   
-                  return this.value.includes(predi) && 
-                          maxOdds >= this.user.rangeCotes[0] && 
-                          maxOdds <= this.user.rangeCotes[1]
+                  return (this.value.includes(predi) || [3].includes(predi))&& 
+                          maxOdds >= this.rangeValues[0] && 
+                          maxOdds <= this.rangeValues[1]
                 });
                 
                 // Update the league property of the JSON object with the filtered matches
@@ -315,8 +318,11 @@ export class DashboardComponent implements AfterViewInit {
           } else if (predi === 0) {
             maxOdds = awayMax;
           }
+          else if (predi === 3) {
+            maxOdds = this.rangeValues[0];
+          }
           
-          return this.value.includes(predi) && 
+          return (this.value.includes(predi) || [3].includes(predi))&& 
                   maxOdds >= this.rangeValues[0] && 
                   maxOdds <= this.rangeValues[1]
         });
@@ -384,8 +390,11 @@ export class DashboardComponent implements AfterViewInit {
                       } else if (predi === 0) {
                         maxOdds = awayMax;
                       }
+                      else if (predi === 3) {
+                        maxOdds = this.rangeValues[0];
+                      }
                       
-                      return this.value.includes(predi) && 
+                      return (this.value.includes(predi) || [3].includes(predi))&& 
                               maxOdds >= this.rangeValues[0] && 
                               maxOdds <= this.rangeValues[1]
                     });
@@ -405,20 +414,22 @@ export class DashboardComponent implements AfterViewInit {
         this.id_leagues = Object.keys(this.data);
         this.all_leagues = this.id_leagues;
         console.log(this.id_leagues, this.all_leagues)
-  
+        console.log("je suis la")
         // create an object to store matches for each league
         const matchesByLeague: { [id: string]: Match[] } = {};
   
         // iterate over each league and assign matches to a separate array
+        console.log(this.id_leagues)
+        console.log("data",this.data)
         this.id_leagues.forEach((id) => {
           matchesByLeague[id] = this.data[id];
         });
         
+        console.log("matchesByleagues",matchesByLeague)
         for (const league in matchesByLeague) {
           if (matchesByLeague.hasOwnProperty(league)) {
             // Get the array of matches for the current league
             const matches = matchesByLeague[league];
-            
             // Filter the matches based on the value of the 'predi' variable
             // console.log(matches)
             const filteredMatches = matches.filter(match => {
@@ -435,8 +446,11 @@ export class DashboardComponent implements AfterViewInit {
               } else if (predi === 0) {
                 maxOdds = awayMax;
               }
+              else if (predi === 3) {
+                maxOdds = this.rangeValues[0];
+              }
               
-              return this.value.includes(predi) && 
+              return (this.value.includes(predi) || [3].includes(predi))&& 
                       maxOdds >= this.rangeValues[0] && 
                       maxOdds <= this.rangeValues[1]
             });
@@ -477,8 +491,11 @@ export class DashboardComponent implements AfterViewInit {
           } else if (predi === 0) {
             maxOdds = awayMax;
           }
+          else if (predi === 3) {
+            maxOdds = this.rangeValues[0];
+          }
           
-          return this.value.includes(predi) && 
+          return (this.value.includes(predi) || [3].includes(predi))&& 
                   maxOdds >= this.rangeValues[0] && 
                   maxOdds <= this.rangeValues[1]
         });
