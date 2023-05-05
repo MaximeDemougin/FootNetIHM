@@ -66,7 +66,7 @@ export class StatsComponent {
       "id_leagues": event
     }
     console.log(this.settings)
-    this.http.post('http://localhost:5000/Get_Statistics',this.settings).subscribe((res:any) => {
+    this.http.post(this.EndpointService.endpoint+'/Get_Statistics',this.settings).subscribe((res:any) => {
       this.stats = res;
       console.log(this.stats);
     })
@@ -81,7 +81,7 @@ export class StatsComponent {
       "id_leagues": this.leagues
     }
     console.log(this.settings)
-    this.http.post('http://localhost:5000/Get_Statistics',this.settings).subscribe((res:any) => {
+    this.http.post(this.EndpointService.endpoint+'/Get_Statistics',this.settings).subscribe((res:any) => {
       this.stats = res;
       console.log(this.stats);
     })
@@ -95,7 +95,7 @@ export class StatsComponent {
       "id_leagues": this.leagues
     }
     console.log(this.settings)
-    this.http.post('http://localhost:5000/Get_Statistics',this.settings).subscribe((res:any) => {
+    this.http.post(this.EndpointService.endpoint+'/Get_Statistics',this.settings).subscribe((res:any) => {
       this.stats = res;
     })
     this. onRadioButtonClick(this.tableau)
@@ -114,7 +114,7 @@ export class StatsComponent {
         "id_leagues": this.leagues
       }
       console.log(this.settings)
-      this.http.post('http://localhost:5000/Get_Statistics',this.settings).subscribe((res:any) => {
+      this.http.post(this.EndpointService.endpoint+'/Get_Statistics',this.settings).subscribe((res:any) => {
         this.stats = res;
       })
       this.onRadioButtonClick('TypeMatches');
