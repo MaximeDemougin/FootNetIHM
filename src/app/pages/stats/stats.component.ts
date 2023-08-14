@@ -142,7 +142,7 @@ export class StatsComponent {
     const res: any = await this.http.post(`${this.EndpointService.endpoint}/Get_Table`, this.settings_table).toPromise();
     if (choix === 'League') {
       this.cols=[
-        { field: "Name_League", header: "Championnats" },
+        { field: "League_Name_Flashscore", header: "Championnats" },
         { field: "Matches_Betted", header: "Nombre" },
         { field: "Win_Rate", header: "Win rate" },
         { field: "Units", header: "Net" },
@@ -186,7 +186,7 @@ export class StatsComponent {
         { field: "ID_MATCH", header: "ID_MATCH" },
         { field: "HomeTeam", header: "Domicile" },
         { field: "AwayTeam", header: "Extérieur" },
-        { field: "Name_League", header: "Championnat" },
+        { field: "League_Name_Flashscore", header: "Championnat" },
         { field: "Prediction", header: "Prediction" },
         { field: "result", header: "Résultat" },
         { field: "units", header: "Net" },

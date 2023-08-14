@@ -3,5 +3,6 @@
     "tslint.enable": false,
     "search.exclude": {
         "**/node_modules": false
-    }
+    },
+    "angular.enable-strict-mode-prompt": false
 }

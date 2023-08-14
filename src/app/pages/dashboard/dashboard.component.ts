@@ -89,21 +89,21 @@ export class DashboardComponent implements AfterViewInit {
       if (typeof this.accordionData.Id_match !== "undefined") {
 
         // if (this.selectedTabMatchs == 'Composition') {
-        this.http.get(this.EndpointService.endpoint+'/get_compos_match?id='+this.accordionData.Id_match, { observe: 'response' }).subscribe((res) => {
-        this.teamComposition = res.body;
-        this.homePlayers_titu = this.teamComposition.titulaire.home;
-        this.awayPlayers_titu = this.teamComposition.titulaire.away;
-        this.homePlayers_rempl = this.teamComposition.remplacant.home;
-        this.awayPlayers_rempl = this.teamComposition.remplacant.away;
-        this.homePlayers_blesse = this.teamComposition.blesse.home;
-        this.awayPlayers_blesse = this.teamComposition.blesse.away;
-        this.home_Coach = this.teamComposition.entraineur.home;
-        this.away_Coach = this.teamComposition.entraineur.away;
-        this.home_formation = this.teamComposition.formation.home;
-        this.away_formation = this.teamComposition.formation.away;
+      //   this.http.get(this.EndpointService.endpoint+'/get_compos_match?id='+this.accordionData.Id_match, { observe: 'response' }).subscribe((res) => {
+      //   this.teamComposition = res.body;
+      //   this.homePlayers_titu = this.teamComposition.titulaire.home;
+      //   this.awayPlayers_titu = this.teamComposition.titulaire.away;
+      //   this.homePlayers_rempl = this.teamComposition.remplacant.home;
+      //   this.awayPlayers_rempl = this.teamComposition.remplacant.away;
+      //   this.homePlayers_blesse = this.teamComposition.blesse.home;
+      //   this.awayPlayers_blesse = this.teamComposition.blesse.away;
+      //   this.home_Coach = this.teamComposition.entraineur.home;
+      //   this.away_Coach = this.teamComposition.entraineur.away;
+      //   this.home_formation = this.teamComposition.formation.home;
+      //   this.away_formation = this.teamComposition.formation.away;
 
 
-      });
+      // });
     // }
     // if (this.selectedTabMatchs == 'Statistiques') {
 
